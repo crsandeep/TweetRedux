@@ -32,7 +32,7 @@ public class User {
             user.name = jsonObject.getString("name");
             user.uid = jsonObject.getLong("id");
             user.screenName = jsonObject.getString("screen_name");
-            user.profileImageUrl = jsonObject.getString("profile_image_url");
+            user.profileImageUrl = jsonObject.getString("profile_image_url").replace("_normal", "_bigger");
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.twitter.models.Tweet;
+import com.codepath.apps.twitter.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -28,11 +29,13 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
+        TextView tvTime = (TextView) convertView.findViewById(R.id.tvTime);
 
         tvUserName.setText(tweet.getUser().getName());
         tvBody.setText(tweet.getBody());
         ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        tvTime.setText(Utils.getRelativeTimeAgo(tweet.getCreatedAt()));
 
         return convertView;
     }
