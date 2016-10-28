@@ -3,5 +3,10 @@
 
     <string name="app_name">Twitter</string>
     <string name="login_label">Connect to Twitter</string>
+    <string name="profile_image">profile image</string>
+    <string name="reply">reply</string>
+    <string name="retweet">retweet</string>
+    <string name="like">like</string>
+    <string name="message">message</string>
 
 </resources>

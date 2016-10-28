@@ -64,4 +64,6 @@ dependencies {
     compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     // PercentageView
     compile 'com.android.support:percent:24.2.1'
+    // gson
+    compile 'com.google.code.gson:gson:2.6.2'
 }
