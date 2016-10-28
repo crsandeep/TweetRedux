@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginRight="5dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:paddingTop="10dp"
+        android:layout_marginEnd="10dp"
+        tools:src="@drawable/ic_launcher"
         android:id="@+id/ivProfileImage"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
@@ -14,29 +18,121 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        tools:text="sraveesh"
         android:id="@+id/tvUserName"
+        android:textSize="15sp"
         android:textStyle="bold"
-        android:textColor="#303030"
+        android:textColor="#606060"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/ivProfileImage" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:paddingTop="10dp"
-        android:textColor="#303030"
-        android:id="@+id/tvBody"
-        android:layout_below="@+id/tvUserName"
-        android:layout_toEndOf="@+id/ivProfileImage" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
         android:id="@+id/tvTime"
+        tools:text="1 min ago"
         android:textColor="#B0B0B0"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:textSize="16sp"
+        android:paddingTop="10dp"
+        android:textColor="#606060"
+        android:lineSpacingMultiplier="1.2"
+        android:id="@+id/tvBody"
+        tools:text="Jest snapshot testing is super for CLI output. So nice to see the impact of the code changes on the output."
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textColorLink="#66d6ff"
+        android:layout_below="@+id/tvUserName"
+        android:layout_toEndOf="@+id/ivProfileImage" />
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvBody"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            app:layout_widthPercent="15%"
+            android:gravity="start"
+            android:layout_alignParentStart="true"
+            android:tint="#AAB8C2"
+            android:src="@drawable/reply"
+            android:id="@+id/ivReply" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivReply"
+            app:layout_widthPercent="28%"
+            android:id="@+id/lin"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:tint="#AAB8C2"
+                android:layout_gravity="right"
+                android:scaleType="fitEnd"
+                android:src="@drawable/retweet"
+                android:layout_weight="0.2"
+                android:id="@+id/ivRetweet" />
+
+            <TextView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:gravity="top|center_horizontal"
+                android:paddingLeft="3dp"
+                android:layout_gravity="center"
+                tools:text="10"
+                android:textColor="#AAB8C2"
+                android:id="@+id/tvRetweetCount" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/lin"
+            app:layout_widthPercent="28%"
+            android:id="@+id/lin2"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:tint="#AAB8C2"
+                android:layout_gravity="right"
+                android:scaleType="fitEnd"
+                android:src="@drawable/like"
+                android:layout_weight="0.2"
+                android:id="@+id/ivLike" />
+
+            <TextView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:gravity="top|center_horizontal"
+                android:paddingLeft="3dp"
+                android:layout_gravity="center"
+                tools:text="20"
+                android:textColor="#AAB8C2"
+                android:id="@+id/tvLikeCount" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="18dp"
+            app:layout_widthPercent="23%"
+            android:scaleType="fitEnd"
+            android:layout_toRightOf="@id/lin2"
+            android:tint="#AAB8C2"
+            android:src="@drawable/message"
+            android:id="@+id/ivMessage" />
+    </android.support.percent.PercentRelativeLayout>
+
 </RelativeLayout>

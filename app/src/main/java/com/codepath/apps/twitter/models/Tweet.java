@@ -12,6 +12,7 @@ public class Tweet {
     private long uid;
     private String createdAt;
     private User user;
+    private String retweetCount;
 
     public String getBody() {
         return body;
@@ -29,6 +30,10 @@ public class Tweet {
         return user;
     }
 
+    public String getRetweetCount() {
+        return retweetCount;
+    }
+
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
         try {
@@ -36,6 +41,7 @@ public class Tweet {
             tweet.uid = jsonObject.getLong("id");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+            tweet.retweetCount = jsonObject.getString("retweet_count");
         } catch (JSONException e) {
             e.printStackTrace();
         }

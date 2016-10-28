@@ -8,6 +8,7 @@ public class User {
     private String name;
     private Long uid;
     private String screenName;
+    private String favouritesCount;
     private String profileImageUrl;
 
     public String getName() {
@@ -22,6 +23,10 @@ public class User {
         return screenName;
     }
 
+    public String getFavouritesCount() {
+        return favouritesCount;
+    }
+
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
@@ -32,6 +37,7 @@ public class User {
             user.name = jsonObject.getString("name");
             user.uid = jsonObject.getLong("id");
             user.screenName = jsonObject.getString("screen_name");
+            user.favouritesCount = jsonObject.getString("favourites_count");
             user.profileImageUrl = jsonObject.getString("profile_image_url").replace("_normal", "_bigger");
         } catch (JSONException e) {
             e.printStackTrace();

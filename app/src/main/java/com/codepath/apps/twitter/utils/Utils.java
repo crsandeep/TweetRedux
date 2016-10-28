@@ -1,4 +1,4 @@
-package com.codepath.apps.twitter.util;
+package com.codepath.apps.twitter.utils;
 
 import android.text.format.DateUtils;
 

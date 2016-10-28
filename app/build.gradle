@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 24
@@ -23,6 +24,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 repositories {
@@ -38,14 +44,24 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile 'com.codepath.libraries:android-oauth-handler:1.1.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
-    // Picasso for remote image loading
-    compile 'com.squareup.picasso:picasso:2.5.2'
     // Android Async Http for sending async network requests
     compile 'com.loopj.android:android-async-http:1.4.9'
     // DBFlow for simple persistence with an ORM
     apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    // Stetho for network inspection
     compile 'com.facebook.stetho:stetho:1.4.1'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
+    // RecyclerView for better lists
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    // Glide for image loading and caching
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    // ReyclerView divider library
+    compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    // PercentageView
+    compile 'com.android.support:percent:24.2.1'
 }
