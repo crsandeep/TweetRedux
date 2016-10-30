@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_vertical_margin"
     android:background="#FFFFFF" >
+
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/ivComposeCancel"
+        android:tint="@color/colorPrimary"
+        android:src="@drawable/ic_clear_black_24dp"/>
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/ivComposeProfile"
+        tools:src="@drawable/ic_launcher"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -11,23 +29,29 @@
         android:id="@+id/etTweetText"
         android:gravity="start"
         android:lines="4"
+        android:textColorHint="#C8C8C8"
         android:hint="@string/compose_hint"
+        android:textColor="@android:color/black"
+        android:textSize="19sp"
+        android:layout_below="@+id/ivComposeCancel"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="7dp"
         android:background="@android:color/transparent" />
 
     <Button
         android:layout_width="70dp"
         android:layout_height="40dp"
         android:onClick="postTweet"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:text="@string/tweet_button"
         android:layout_marginBottom="20dp"
         android:textColor="#FFFFFF"
         android:background="#661DA1F2"
         android:enabled="false"
-        android:textSize="15sp"
+        android:textSize="17sp"
         android:textAllCaps="false"
         android:id="@+id/btnPost"
-        android:layout_below="@+id/etTweetText"
         />
 
     <TextView
@@ -35,8 +59,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/etTweetText"
         android:text="@string/tweet_count"
-        android:textSize="15sp"
-        android:padding="10dp"
+        android:textSize="17sp"
+        android:textColor="@android:color/black"
+        android:layout_marginEnd="20dp"
         android:layout_alignBaseline="@id/btnPost"
         android:layout_alignBottom="@+id/btnPost"
         android:layout_toStartOf="@+id/btnPost"

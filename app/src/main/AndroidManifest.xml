@@ -41,12 +41,19 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TimelineActivity" />
+        <activity android:name=".activities.TimelineActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"></data>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.ImageFullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_image_fullscreen"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".activities.DetailedViewActivity"></activity>
     </application>
 
 </manifest>

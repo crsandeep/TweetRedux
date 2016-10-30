@@ -3,6 +3,9 @@ package com.codepath.apps.twitter.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class User {
 
     @SerializedName("id")
@@ -256,5 +259,149 @@ public class User {
 
     public String getTranslatorType() {
         return translatorType;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setIdStr(String idStr) {
+        this.idStr = idStr;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setFollowersCount(Integer followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public void setFriendsCount(Integer friendsCount) {
+        this.friendsCount = friendsCount;
+    }
+
+    public void setListedCount(Integer listedCount) {
+        this.listedCount = listedCount;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setFavouritesCount(Integer favouritesCount) {
+        this.favouritesCount = favouritesCount;
+    }
+
+    public void setUtcOffset(Integer utcOffset) {
+        this.utcOffset = utcOffset;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public void setGeoEnabled(Boolean geoEnabled) {
+        this.geoEnabled = geoEnabled;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public void setStatusesCount(Integer statusesCount) {
+        this.statusesCount = statusesCount;
+    }
+
+    public void setProfileBackgroundColor(String profileBackgroundColor) {
+        this.profileBackgroundColor = profileBackgroundColor;
+    }
+
+    public void setProfileBackgroundImageUrl(String profileBackgroundImageUrl) {
+        this.profileBackgroundImageUrl = profileBackgroundImageUrl;
+    }
+
+    public void setProfileBackgroundImageUrlHttps(String profileBackgroundImageUrlHttps) {
+        this.profileBackgroundImageUrlHttps = profileBackgroundImageUrlHttps;
+    }
+
+    public void setProfileBackgroundTile(Boolean profileBackgroundTile) {
+        this.profileBackgroundTile = profileBackgroundTile;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public void setProfileImageUrlHttps(String profileImageUrlHttps) {
+        this.profileImageUrlHttps = profileImageUrlHttps;
+    }
+
+    public void setProfileBannerUrl(String profileBannerUrl) {
+        this.profileBannerUrl = profileBannerUrl;
+    }
+
+    public void setProfileLinkColor(String profileLinkColor) {
+        this.profileLinkColor = profileLinkColor;
+    }
+
+    public void setProfileSidebarBorderColor(String profileSidebarBorderColor) {
+        this.profileSidebarBorderColor = profileSidebarBorderColor;
+    }
+
+    public void setProfileSidebarFillColor(String profileSidebarFillColor) {
+        this.profileSidebarFillColor = profileSidebarFillColor;
+    }
+
+    public void setProfileTextColor(String profileTextColor) {
+        this.profileTextColor = profileTextColor;
+    }
+
+    public void setProfileUseBackgroundImage(Boolean profileUseBackgroundImage) {
+        this.profileUseBackgroundImage = profileUseBackgroundImage;
+    }
+
+    public void setHasExtendedProfile(Boolean hasExtendedProfile) {
+        this.hasExtendedProfile = hasExtendedProfile;
+    }
+
+    public void setDefaultProfile(Boolean defaultProfile) {
+        this.defaultProfile = defaultProfile;
+    }
+
+    public void setDefaultProfileImage(Boolean defaultProfileImage) {
+        this.defaultProfileImage = defaultProfileImage;
+    }
+
+    public void setFollowing(Boolean following) {
+        this.following = following;
+    }
+
+    public void setFollowRequestSent(Boolean followRequestSent) {
+        this.followRequestSent = followRequestSent;
+    }
+
+    public void setNotifications(Boolean notifications) {
+        this.notifications = notifications;
+    }
+
+    public void setTranslatorType(String translatorType) {
+        this.translatorType = translatorType;
     }
 }

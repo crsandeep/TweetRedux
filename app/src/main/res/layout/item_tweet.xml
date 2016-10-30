@@ -1,156 +1,173 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="10dp"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:paddingTop="10dp"
-        android:layout_marginEnd="10dp"
-        tools:src="@drawable/ic_launcher"
-        android:id="@+id/ivProfileImage"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:contentDescription="@string/profile_image" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="sraveesh"
-        android:id="@+id/tvUserName"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="#606060"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/ivProfileImage" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvTime"
-        tools:text="1 min ago"
-        android:textColor="#B0B0B0"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:textSize="16sp"
-        android:paddingTop="10dp"
-        android:textColor="#606060"
-        android:lineSpacingMultiplier="1.2"
-        android:id="@+id/tvBody"
-        tools:text="Jest snapshot testing is super for CLI output. So nice to see the impact of the code changes on the output."
-        android:autoLink="all"
-        android:linksClickable="true"
-        android:textColorLink="#66d6ff"
-        android:layout_below="@+id/tvUserName"
-        android:layout_toEndOf="@+id/ivProfileImage" />
-
-    <ImageView
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ivMedia"
-        android:paddingTop="5dp"
-        android:layout_below="@+id/tvBody"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        tools:src="@drawable/ic_launcher" />
-
-    <android.support.percent.PercentRelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ivMedia"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:paddingTop="10dp">
+        android:padding="7dp"
+        android:paddingBottom="12dp">
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="18dp"
-            app:layout_widthPercent="15%"
-            android:gravity="start"
+            android:id="@+id/ivProfileImage"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_alignParentStart="true"
-            android:tint="#AAB8C2"
-            android:src="@drawable/reply"
-            android:id="@+id/ivReply"
-            android:contentDescription="@string/reply" />
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="7dp"
+            android:contentDescription="@string/profile_image"
+            android:paddingTop="10dp"
+            tools:src="@drawable/ic_launcher" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/ivReply"
-            app:layout_widthPercent="28%"
-            android:id="@+id/lin"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="18dp"
-                android:tint="#AAB8C2"
-                android:layout_gravity="end"
-                android:scaleType="fitEnd"
-                android:src="@drawable/retweet"
-                android:layout_weight="0.2"
-                android:id="@+id/ivRetweet"
-                android:contentDescription="@string/retweet" />
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:textColor="#606060"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="Sandeep" />
 
-            <TextView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:gravity="top|center_horizontal"
-                android:paddingStart="3dp"
-                android:paddingEnd="3dp"
-                android:layout_gravity="center"
-                tools:text="10"
-                android:textColor="#AAB8C2"
-                android:id="@+id/tvRetweetCount" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvScreenName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/lin"
-            app:layout_widthPercent="28%"
-            android:id="@+id/lin2"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="18dp"
-                android:tint="#AAB8C2"
-                android:layout_gravity="end"
-                android:scaleType="fitEnd"
-                android:src="@drawable/like"
-                android:layout_weight="0.2"
-                android:id="@+id/ivLike"
-                android:contentDescription="@string/like" />
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/tvUserName"
+            android:paddingStart="5dp"
+            android:paddingTop="1dp"
+            android:textColor="#AAB8C2"
+            android:textSize="13sp"
+            tools:text="sraveesh" />
 
-            <TextView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:gravity="top|center_horizontal"
-                android:paddingStart="3dp"
-                android:paddingEnd="3dp"
-                android:layout_gravity="center"
-                tools:text="20"
-                android:textColor="#AAB8C2"
-                android:id="@+id/tvLikeCount" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:textColor="#B0B0B0"
+            tools:text="1 min ago" />
+
+        <com.codepath.apps.twitter.adapters.LinkifiedTextView
+            android:id="@+id/tvBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvUserName"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:autoLink="all"
+            android:lineSpacingMultiplier="1.2"
+            android:linksClickable="true"
+            android:paddingTop="10dp"
+            android:textColor="#606060"
+            android:textColorLink="#66d6ff"
+            android:textSize="16sp"
+            tools:text="Jest snapshot testing is super for CLI output. So nice to see the impact of the code changes on the output." />
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="18dp"
-            app:layout_widthPercent="23%"
-            android:scaleType="fitEnd"
-            android:layout_toEndOf="@id/lin2"
-            android:tint="#AAB8C2"
-            android:src="@drawable/message"
-            android:id="@+id/ivMessage"
-            android:contentDescription="@string/message" />
-    </android.support.percent.PercentRelativeLayout>
+            android:id="@+id/ivMedia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvBody"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:adjustViewBounds="true"
+            android:onClick="onImageClick"
+            android:paddingTop="5dp"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/ic_launcher" />
 
-</RelativeLayout>
+        <android.support.percent.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ivMedia"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/ivReply"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:contentDescription="@string/reply"
+                android:gravity="start"
+                android:src="@drawable/reply"
+                android:tint="#AAB8C2"
+                app:layout_widthPercent="15%" />
+
+            <LinearLayout
+                android:id="@+id/retweetLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/ivReply"
+                android:orientation="horizontal"
+                app:layout_widthPercent="30%">
+
+                <ImageView
+                    android:id="@+id/ivRetweet"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="end"
+                    android:layout_weight="0.2"
+                    android:contentDescription="@string/retweet"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/retweet"
+                    android:tint="#AAB8C2" />
+
+                <TextView
+                    android:id="@+id/tvRetweetCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:gravity="top|center_horizontal"
+                    android:paddingEnd="3dp"
+                    android:paddingStart="3dp"
+                    android:textColor="#AAB8C2"
+                    tools:text="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/likeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/retweetLayout"
+                android:orientation="horizontal"
+                app:layout_widthPercent="28%">
+
+                <ImageView
+                    android:id="@+id/ivLike"
+                    android:layout_width="0dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="end"
+                    android:layout_weight="0.2"
+                    android:contentDescription="@string/like"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/like"
+                    android:tint="#AAB8C2" />
+
+                <TextView
+                    android:id="@+id/tvLikeCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:gravity="top|center_horizontal"
+                    android:paddingEnd="3dp"
+                    android:paddingStart="3dp"
+                    android:textColor="#AAB8C2"
+                    tools:text="20" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivMessage"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@id/likeLayout"
+                android:contentDescription="@string/message"
+                android:scaleType="fitEnd"
+                android:src="@drawable/message"
+                android:tint="#AAB8C2"
+                app:layout_widthPercent="23%" />
+        </android.support.percent.PercentRelativeLayout>
+
+    </RelativeLayout>
+</layout>

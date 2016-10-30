@@ -3,6 +3,9 @@ package com.codepath.apps.twitter.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Tweet {
 
     @SerializedName("created_at")
@@ -88,5 +91,53 @@ public class Tweet {
 
     public Boolean getRetweeted() {
         return retweeted;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setIdStr(String idStr) {
+        this.idStr = idStr;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setTruncated(Boolean truncated) {
+        this.truncated = truncated;
+    }
+
+    public void setEntities(Entities entities) {
+        this.entities = entities;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setQuoteStatus(Boolean quoteStatus) {
+        isQuoteStatus = quoteStatus;
+    }
+
+    public void setRetweetCount(Integer retweetCount) {
+        this.retweetCount = retweetCount;
+    }
+
+    public void setFavoriteCount(Integer favoriteCount) {
+        this.favoriteCount = favoriteCount;
+    }
+
+    public void setFavorited(Boolean favorited) {
+        this.favorited = favorited;
+    }
+
+    public void setRetweeted(Boolean retweeted) {
+        this.retweeted = retweeted;
     }
 }

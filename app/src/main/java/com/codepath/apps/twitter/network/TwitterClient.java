@@ -34,10 +34,13 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
 	}
 
-	public void composeTweet(AsyncHttpResponseHandler  handler, String tweetBody){
+	public void composeTweet(AsyncHttpResponseHandler  handler, String tweetBody, boolean isReply, String idToReply){
 		String apiUrl = getApiUrl("statuses/update.json");
 		RequestParams params = new RequestParams();
 		params.put("status", tweetBody);
+		if(isReply) {
+			params.put("in_reply_to_status_id", idToReply);
+		}
 		getClient().post(apiUrl, params, handler);
 	}
 
@@ -49,5 +52,29 @@ public class TwitterClient extends OAuthBaseClient {
 	public void verifyCredentials(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		getClient().get(apiUrl, handler);
+	}
+
+	public void reTweet(AsyncHttpResponseHandler handler, String tweetId) {
+		String apiUrl = getApiUrl("statuses/retweet/" + tweetId +".json");
+		getClient().post(apiUrl, handler);
+	}
+
+	public void unReTweet(AsyncHttpResponseHandler handler, String tweetId) {
+		String apiUrl = getApiUrl("statuses/unretweet/" + tweetId +".json");
+		getClient().post(apiUrl, handler);
+	}
+
+	public void like(AsyncHttpResponseHandler handler, String tweetId) {
+		String apiUrl = getApiUrl("favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweetId);
+		getClient().post(apiUrl, params, handler);
+	}
+
+	public void unlike(AsyncHttpResponseHandler handler, String tweetId) {
+		String apiUrl = getApiUrl("favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", tweetId);
+		getClient().post(apiUrl, params, handler);
 	}
 }

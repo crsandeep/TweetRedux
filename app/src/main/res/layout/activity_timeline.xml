@@ -41,7 +41,7 @@
                         android:text="@string/home"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:paddingStart="20dp"
+                        android:paddingStart="15dp"
                         android:paddingEnd="10dp"
                         android:textColor="@android:color/black" />
 

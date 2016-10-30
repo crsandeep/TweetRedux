@@ -1,15 +1,15 @@
 package com.codepath.apps.twitter.activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -24,6 +24,7 @@ import com.codepath.apps.twitter.databinding.ActivityTimelineBinding;
 import com.codepath.apps.twitter.fragments.ComposeFragment;
 import com.codepath.apps.twitter.models.Tweet;
 import com.codepath.apps.twitter.network.TwitterClient;
+import com.codepath.apps.twitter.utils.Utils;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -31,6 +32,7 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,10 +57,7 @@ public class TimelineActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
 
         setSupportActionBar(binding.toolbar);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        //binding.swipeContainer.setProgressViewOffset(true, 100, 300);
 
         tweets = new ArrayList<>();
         aTweets = new TweetsAdapter(this, tweets);
@@ -69,6 +68,27 @@ public class TimelineActivity extends AppCompatActivity {
         client = TwitterApplication.getRestClient();
         populateTimeline();
         setupProfileImage();
+
+        Intent webIntent = getIntent();
+        String action = webIntent.getAction();
+        String type = webIntent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                String titleOfPage = webIntent.getStringExtra(Intent.EXTRA_SUBJECT);
+                String urlOfPage = webIntent.getStringExtra(Intent.EXTRA_TEXT);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("body", urlOfPage);
+                bundle.putString("titleOfPage", titleOfPage);
+
+                FragmentManager fm = getSupportFragmentManager();
+                ComposeFragment composeFragment = ComposeFragment.newInstance("Compose tweet");
+                composeFragment.setArguments(bundle);
+                composeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+                composeFragment.show(fm, "fragment_compose");
+            }
+        }
 
         binding.swipeContainer.setOnRefreshListener(() -> {
             refresh = true;
@@ -121,6 +141,15 @@ public class TimelineActivity extends AppCompatActivity {
                     }
                 }
         );
+
+
+        ItemClickSupport.addTo(binding.rvTweets).setOnItemClickListener(
+                (recyclerView, position, v) -> {
+                    Intent intent = new Intent(TimelineActivity.this, DetailedViewActivity.class);
+                    intent.putExtra("tweet", Parcels.wrap(tweets.get(position)));
+                    startActivity(intent);
+                }
+        );
     }
 
     public void populateTimeline() {
@@ -146,7 +175,13 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                System.out.println("here failed" + statusCode);
+                System.out.println("network call failed" + statusCode);
+//                List<Tweet> backupTweets = SQLite.select().
+//                        from(Tweet.class).queryList();
+//                System.out.println("network call backuptweets  "+ backupTweets.size());
+//                tweets.addAll(backupTweets);
+//                aTweets.notifyDataSetChanged();
+                binding.swipeContainer.setRefreshing(false);
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         }, max_id);
@@ -157,9 +192,9 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    String profileImageUrl = response.getString("profile_image_url").replace("_normal", "_bigger");
+                    Utils.profileImageUrl = response.getString("profile_image_url").replace("_normal", "_bigger");
                     screenName = response.getString("screen_name");
-                    Glide.with(getApplicationContext()).load(profileImageUrl).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 60, 0)).into(binding.ivProfilePhoto);
+                    Glide.with(getApplicationContext()).load(Utils.profileImageUrl).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 60, 0)).into(binding.ivProfilePhoto);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -170,25 +205,15 @@ public class TimelineActivity extends AppCompatActivity {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
-
-    }
-
-    public void onLikeClick(View view) {
-        ImageView ivLike = (ImageView) view.findViewById(R.id.ivLike);
-        ivLike.setColorFilter(Color.parseColor("#E81C4F"));
     }
 
     public void composeNew(View view) {
         FragmentManager fm = getSupportFragmentManager();
         ComposeFragment composeFragment = ComposeFragment.newInstance("Compose tweet");
-        //composeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+        composeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
         composeFragment.show(fm, "fragment_compose");
     }
 
     public void postTweet(View view) {
-    }
-
-    public static ArrayList<Tweet> getTweets() {
-        return tweets;
     }
 }
