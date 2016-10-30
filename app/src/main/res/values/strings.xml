@@ -9,4 +9,16 @@
     <string name="like">like</string>
     <string name="message">message</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tweet_hint">What\'s happening?</string>
+    <string name="compose_hint">What\'s happening?</string>
+    <string name="tweet_button">Tweet</string>
+    <string name="tweet_count">140</string>
+    <string name="home">Home</string>
+
+    <string name="title_activity_image_fullscreen">ImageFullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

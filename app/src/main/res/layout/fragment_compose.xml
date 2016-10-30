@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:background="#FFFFFF" >
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etTweetText"
+        android:gravity="start"
+        android:lines="4"
+        android:hint="@string/compose_hint"
+        android:background="@android:color/transparent" />
+
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:onClick="postTweet"
+        android:layout_alignParentEnd="true"
+        android:text="@string/tweet_button"
+        android:layout_marginBottom="20dp"
+        android:textColor="#FFFFFF"
+        android:background="#661DA1F2"
+        android:enabled="false"
+        android:textSize="15sp"
+        android:textAllCaps="false"
+        android:id="@+id/btnPost"
+        android:layout_below="@+id/etTweetText"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etTweetText"
+        android:text="@string/tweet_count"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:layout_alignBaseline="@id/btnPost"
+        android:layout_alignBottom="@+id/btnPost"
+        android:layout_toStartOf="@+id/btnPost"
+        android:id="@+id/tvCharCount"/>
+</RelativeLayout>

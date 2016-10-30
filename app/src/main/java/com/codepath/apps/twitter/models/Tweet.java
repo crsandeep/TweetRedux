@@ -1,67 +1,92 @@
 package com.codepath.apps.twitter.models;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Tweet {
 
-    private String body;
-    private long uid;
+    @SerializedName("created_at")
+    @Expose
     private String createdAt;
+    @SerializedName("id")
+    @Expose
+    private Long id;
+    @SerializedName("id_str")
+    @Expose
+    private String idStr;
+    @SerializedName("text")
+    @Expose
+    private String text;
+    @SerializedName("truncated")
+    @Expose
+    private Boolean truncated;
+    @SerializedName("entities")
+    @Expose
+    private Entities entities;
+    @SerializedName("user")
+    @Expose
     private User user;
-    private String retweetCount;
-
-    public String getBody() {
-        return body;
-    }
-
-    public long getUid() {
-        return uid;
-    }
+    @SerializedName("is_quote_status")
+    @Expose
+    private Boolean isQuoteStatus;
+    @SerializedName("retweet_count")
+    @Expose
+    private Integer retweetCount;
+    @SerializedName("favorite_count")
+    @Expose
+    private Integer favoriteCount;
+    @SerializedName("favorited")
+    @Expose
+    private Boolean favorited;
+    @SerializedName("retweeted")
+    @Expose
+    private Boolean retweeted;
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getIdStr() {
+        return idStr;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Boolean getTruncated() {
+        return truncated;
+    }
+
+    public Entities getEntities() {
+        return entities;
     }
 
     public User getUser() {
         return user;
     }
 
-    public String getRetweetCount() {
+    public Boolean getQuoteStatus() {
+        return isQuoteStatus;
+    }
+
+    public Integer getRetweetCount() {
         return retweetCount;
     }
 
-    public static Tweet fromJSON(JSONObject jsonObject) {
-        Tweet tweet = new Tweet();
-        try {
-            tweet.body = jsonObject.getString("text");
-            tweet.uid = jsonObject.getLong("id");
-            tweet.createdAt = jsonObject.getString("created_at");
-            tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
-            tweet.retweetCount = jsonObject.getString("retweet_count");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return tweet;
+    public Integer getFavoriteCount() {
+        return favoriteCount;
     }
 
-    public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
-        ArrayList<Tweet> tweets = new ArrayList<>();
-        for(int i = 0; i < jsonArray.length(); i++) {
-            try {
-                JSONObject tweetJson = jsonArray.getJSONObject(i);
-                Tweet tweet = fromJSON(tweetJson);
-                if(tweet != null) {
-                    tweets.add(tweet);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                continue;
-            }
-        }
-        return tweets;
+    public Boolean getFavorited() {
+        return favorited;
+    }
+
+    public Boolean getRetweeted() {
+        return retweeted;
     }
 }
