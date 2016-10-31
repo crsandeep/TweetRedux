@@ -178,6 +178,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 refresh = false;
+                System.out.println(json);
                 tweets.addAll(Arrays.asList(new Gson().fromJson(json.toString(), com.codepath.apps.twitter.models.Tweet[].class)));
                 aTweets.notifyDataSetChanged();
                 binding.swipeContainer.setRefreshing(false);
@@ -186,11 +187,6 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println("network call failed" + statusCode);
-//                List<Tweet> backupTweets = SQLite.select().
-//                        from(Tweet.class).queryList();
-//                System.out.println("network call backuptweets  "+ backupTweets.size());
-//                tweets.addAll(backupTweets);
-//                aTweets.notifyDataSetChanged();
                 binding.swipeContainer.setRefreshing(false);
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
