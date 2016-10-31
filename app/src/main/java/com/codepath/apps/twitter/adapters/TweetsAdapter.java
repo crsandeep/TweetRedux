@@ -52,7 +52,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvRetweetUser;
         ImageView ivProfileImage;
+        ImageView ivRetweetImage;
         TextView tvUserName;
         TextView tvScreenName;
         TextView tvBody;
@@ -63,22 +65,26 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivRetweet;
         ImageView ivLike;
         ImageView ivReply;
+        ImageView ivShare;
         LinearLayout retweetLayout;
         LinearLayout likeLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            tvRetweetUser = (TextView) itemView.findViewById(R.id.tvRetweetUser);
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTime = (TextView) itemView.findViewById(R.id.tvTime);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivRetweetImage = (ImageView) itemView.findViewById(R.id.ivRetweetImage);
             tvRetweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
             tvLikeCount = (TextView) itemView.findViewById(R.id.tvLikeCount);
             ivMedia = (ImageView) itemView.findViewById(R.id.ivMedia);
             ivRetweet = (ImageView) itemView.findViewById(R.id.ivRetweet);
             ivLike = (ImageView) itemView.findViewById(R.id.ivLike);
             ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
+            ivShare = (ImageView) itemView.findViewById(R.id.ivShare);
             retweetLayout = (LinearLayout) itemView.findViewById(R.id.retweetLayout);
             likeLayout = (LinearLayout) itemView.findViewById(R.id.likeLayout);
         }
@@ -95,15 +101,45 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(TweetsAdapter.ViewHolder holder, int position) {
         com.codepath.apps.twitter.models.Tweet tweet = mTweets.get(position);
-        holder.tvUserName.setText(tweet.getUser().getName());
-        String screenName = "@" + tweet.getUser().getScreenName();
-        holder.tvScreenName.setText(screenName);
+        holder.tvRetweetUser.setVisibility(View.GONE);
+        holder.ivMedia.setImageResource(0);
+        holder.ivProfileImage.setImageResource(android.R.color.transparent);
+        holder.ivRetweetImage.setVisibility(View.GONE);
+        if(tweet.getRetweet() != null) {
+            holder.tvRetweetUser.setVisibility(View.VISIBLE);
+            holder.ivRetweetImage.setVisibility(View.VISIBLE);
+            holder.tvRetweetUser.setText(tweet.getUser().getName() + " Retweeted");
+            holder.tvUserName.setText(tweet.getRetweet().getUser().getName());
+            String screenName = "@" + tweet.getRetweet().getUser().getScreenName();
+            holder.tvScreenName.setText(screenName);
+            String imageUrl = tweet.getRetweet().getUser().getProfileImageUrl().replace("_normal", "_bigger");
+            Glide.with(getContext()).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
+                    RoundedCornersTransformation.CornerType.ALL)).into(holder.ivProfileImage);
+            if (tweet.getRetweet().getFavoriteCount() != null && tweet.getRetweet().getFavoriteCount() > 0) {
+                String likeString = Integer.toString(tweet.getRetweet().getFavoriteCount());
+                if (tweet.getRetweet().getFavoriteCount() >= 1000) {
+                    likeString = (tweet.getRetweet().getFavoriteCount() / 1000) + "k";
+                }
+                holder.tvLikeCount.setText(likeString);
+            }
+        } else {
+            holder.tvUserName.setText(tweet.getUser().getName());
+            String screenName = "@" + tweet.getUser().getScreenName();
+            holder.tvScreenName.setText(screenName);
+            String imageUrl = tweet.getUser().getProfileImageUrl().replace("_normal", "_bigger");
+            Glide.with(getContext()).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
+                    RoundedCornersTransformation.CornerType.ALL)).into(holder.ivProfileImage);
+            if (tweet.getFavoriteCount() != null && tweet.getFavoriteCount() > 0) {
+                String likeString = Integer.toString(tweet.getFavoriteCount());
+                if (tweet.getFavoriteCount() >= 1000) {
+                    likeString = (tweet.getFavoriteCount() / 1000) + "k";
+                }
+                holder.tvLikeCount.setText(likeString);
+            }
+        }
         holder.tvBody.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "helveticaroman.otf"));
         holder.tvBody.setText(tweet.getText());
-        holder.ivProfileImage.setImageResource(android.R.color.transparent);
-        String imageUrl = tweet.getUser().getProfileImageUrl().replace("_normal", "_bigger");
-        Glide.with(getContext()).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
-                RoundedCornersTransformation.CornerType.ALL)).into(holder.ivProfileImage);
+
         holder.tvTime.setText(Utils.getRelativeTimeAgo(tweet.getCreatedAt()));
         if (tweet.getRetweetCount() != null && tweet.getRetweetCount() > 0) {
             String retweetString = Integer.toString(tweet.getRetweetCount());
@@ -111,13 +147,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 retweetString = (tweet.getRetweetCount() / 1000) + "k";
             }
             holder.tvRetweetCount.setText(retweetString);
-        }
-        if (tweet.getFavoriteCount() != null && tweet.getFavoriteCount() > 0) {
-            String likeString = Integer.toString(tweet.getFavoriteCount());
-            if (tweet.getFavoriteCount() >= 1000) {
-                likeString = (tweet.getFavoriteCount() / 1000) + "k";
-            }
-            holder.tvLikeCount.setText(likeString);
         }
         if (tweet.getRetweeted()) {
             holder.tvRetweetCount.setTextColor(Color.parseColor("#19cf86"));
@@ -135,7 +164,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             DrawableCompat.setTint(holder.ivLike.getDrawable(), Color.parseColor("#AAB8C2"));
         }
 
-        holder.ivMedia.setImageResource(0);
         if (tweet.getEntities().getMedia() != null && tweet.getEntities().getMedia().size() > 0) {
             String image = "";
 
@@ -231,9 +259,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     client.unlike(new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            tweet.setFavoriteCount(tweet.getFavoriteCount() - 1);
+                            if(tweet.getRetweet() != null) {
+                                tweet.getRetweet().setFavoriteCount(tweet.getRetweet().getFavoriteCount() - 1);
+                                holder.tvLikeCount.setText(Integer.toString(tweet.getRetweet().getFavoriteCount()));
+                            } else {
+                                tweet.setFavoriteCount(tweet.getFavoriteCount() - 1);
+                                holder.tvLikeCount.setText(Integer.toString(tweet.getFavoriteCount()));
+                            }
                             DrawableCompat.setTint(holder.ivLike.getDrawable(), Color.parseColor("#AAB8C2"));
-                            holder.tvLikeCount.setText(Integer.toString(tweet.getFavoriteCount()));
                             holder.tvLikeCount.setTextColor(Color.parseColor("#AAB8C2"));
                             tweet.setFavorited(false);
                         }
@@ -247,9 +280,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     client.like(new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            tweet.setFavoriteCount(tweet.getFavoriteCount() + 1);
+                            if(tweet.getRetweet() != null) {
+                                tweet.getRetweet().setFavoriteCount(tweet.getRetweet().getFavoriteCount() + 1);
+                                holder.tvLikeCount.setText(Integer.toString(tweet.getRetweet().getFavoriteCount()));
+                            } else {
+                                tweet.setFavoriteCount(tweet.getFavoriteCount() + 1);
+                                holder.tvLikeCount.setText(Integer.toString(tweet.getFavoriteCount()));
+                            }
                             DrawableCompat.setTint(holder.ivLike.getDrawable(), Color.parseColor("#e81c4f"));
-                            holder.tvLikeCount.setText(Integer.toString(tweet.getFavoriteCount()));
                             holder.tvLikeCount.setTextColor(Color.parseColor("#e81c4f"));
                             tweet.setFavorited(true);
                         }
@@ -261,6 +299,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     }, tweet.getIdStr());
                 }
             }
+        });
+
+        holder.ivShare.setOnClickListener(v -> {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareBody = "";
+            shareBody += "@" + tweet.getUser().getScreenName() + "'s" + "Tweet: ";
+            shareBody += tweet.getText();
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Tweet from " + tweet.getUser().getName() + "(" + "@" + tweet.getUser().getScreenName() + ")");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            mContext.startActivity(Intent.createChooser(sharingIntent, "Share via"));
         });
     }
 

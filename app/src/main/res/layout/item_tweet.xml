@@ -4,26 +4,51 @@
     <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
         android:padding="7dp"
         android:paddingBottom="12dp">
+
+        <ImageView
+            android:id="@+id/ivRetweetImage"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="3dp"
+            android:gravity="start|center"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            android:tint="#AAB8C2"
+            android:contentDescription="@string/profile_image"
+            android:src="@drawable/retweet" />
 
         <ImageView
             android:id="@+id/ivProfileImage"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/tvRetweetUser"
             android:layout_marginEnd="7dp"
             android:contentDescription="@string/profile_image"
             android:paddingTop="10dp"
             tools:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/tvUserName"
+            android:id="@+id/tvRetweetUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/ivProfileImage"
+            android:textColor="#AAB8C2"
+            android:visibility="gone"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            tools:text="Sandeep Retweeted" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:layout_below="@+id/tvRetweetUser"
             android:textColor="#606060"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -33,10 +58,10 @@
             android:id="@+id/tvScreenName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/tvUserName"
             android:paddingStart="5dp"
             android:paddingTop="1dp"
+            android:layout_below="@+id/tvRetweetUser"
             android:textColor="#AAB8C2"
             android:textSize="13sp"
             tools:text="sraveesh" />
@@ -72,8 +97,8 @@
             android:layout_below="@+id/tvBody"
             android:layout_toEndOf="@+id/ivProfileImage"
             android:adjustViewBounds="true"
-            android:onClick="onImageClick"
             android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:scaleType="fitCenter"
             tools:src="@drawable/ic_launcher" />
 
@@ -82,7 +107,8 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/ivMedia"
             android:layout_toEndOf="@+id/ivProfileImage"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp">
 
             <ImageView
                 android:id="@+id/ivReply"
@@ -158,13 +184,14 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/ivMessage"
+                android:id="@+id/ivShare"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_toEndOf="@id/likeLayout"
                 android:contentDescription="@string/message"
+                android:paddingEnd="5dp"
                 android:scaleType="fitEnd"
-                android:src="@drawable/message"
+                android:src="@drawable/ic_share_black_24dp"
                 android:tint="#AAB8C2"
                 app:layout_widthPercent="23%" />
         </android.support.percent.PercentRelativeLayout>

@@ -45,25 +45,48 @@ public class DetailedViewActivity extends AppCompatActivity {
 
         Tweet tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
 
-        binding.tvUserName.setText(tweet.getUser().getName());
-        String screenName = "@" + tweet.getUser().getScreenName();
-        binding.tvScreenName.setText(screenName);
+        binding.ivProfileImage.setImageResource(android.R.color.transparent);
+        binding.tvLikeCount.setText("");
+
+        if(tweet.getRetweet() != null) {
+            binding.tvUserName.setText(tweet.getRetweet().getUser().getName());
+            String screenName = "@" + tweet.getRetweet().getUser().getScreenName();
+            binding.tvScreenName.setText(screenName);
+            String imageUrl = tweet.getRetweet().getUser().getProfileImageUrl().replace("_normal", "_bigger");
+            Glide.with(this).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(this, 10, 0,
+                    RoundedCornersTransformation.CornerType.ALL)).into(binding.ivProfileImage);
+            if (tweet.getRetweet().getFavoriteCount() != null && tweet.getRetweet().getFavoriteCount() > 0) {
+                String likeString = Integer.toString(tweet.getRetweet().getFavoriteCount());
+                if (tweet.getRetweet().getFavoriteCount() >= 1000) {
+                    likeString = (tweet.getRetweet().getFavoriteCount() / 1000) + "k";
+                }
+                binding.tvLikeCount.setText(likeString);
+            }
+        } else {
+            binding.tvUserName.setText(tweet.getUser().getName());
+            String screenName = "@" + tweet.getUser().getScreenName();
+            binding.tvScreenName.setText(screenName);
+            String imageUrl = tweet.getUser().getProfileImageUrl().replace("_normal", "_bigger");
+            Glide.with(this).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(this, 10, 0,
+                    RoundedCornersTransformation.CornerType.ALL)).into(binding.ivProfileImage);
+            if (tweet.getFavoriteCount() != null && tweet.getFavoriteCount() > 0) {
+                String likeString = Integer.toString(tweet.getFavoriteCount());
+                if (tweet.getFavoriteCount() >= 1000) {
+                    likeString = (tweet.getFavoriteCount() / 1000) + "k";
+                }
+                binding.tvLikeCount.setText(likeString);
+            }
+        }
+
         binding.tvBody.setTypeface(Typeface.createFromAsset(getAssets(), "helveticaroman.otf"));
         binding.tvBody.setText(tweet.getText());
-        binding.ivProfileImage.setImageResource(android.R.color.transparent);
-        String imageUrl = tweet.getUser().getProfileImageUrl().replace("_normal", "_bigger");
-        Glide.with(this).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(this, 10, 0,
-                RoundedCornersTransformation.CornerType.ALL)).into(binding.ivProfileImage);
         String relativeTime = Utils.getRelativeTimeAgo(tweet.getCreatedAt()) + " ago";
         binding.tvTime.setText(relativeTime);
         binding.tvRetweetCount.setText("");
         if(tweet.getRetweetCount() != null && tweet.getRetweetCount() > 0) {
             binding.tvRetweetCount.setText(Integer.toString(tweet.getRetweetCount()));
         }
-        binding.tvLikeCount.setText("");
-        if(tweet.getFavoriteCount() != null && tweet.getFavoriteCount() > 0) {
-            binding.tvLikeCount.setText(Integer.toString(tweet.getFavoriteCount()));
-        }
+
         if(tweet.getRetweeted()) {
             DrawableCompat.setTint(binding.ivRetweet.getDrawable(), Color.parseColor("#19cf86"));
         } else {
@@ -190,6 +213,17 @@ public class DetailedViewActivity extends AppCompatActivity {
                     }, tweet.getIdStr());
                 }
             }
+        });
+
+        binding.ivShare.setOnClickListener(v -> {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareBody = "";
+            shareBody += "@" + tweet.getUser().getScreenName() + "'s" + "Tweet: ";
+            shareBody += tweet.getText();
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Tweet from " + tweet.getUser().getName() + "(" + "@" + tweet.getUser().getScreenName() + ")");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
         });
     }
 }

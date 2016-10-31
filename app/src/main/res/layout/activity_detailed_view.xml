@@ -20,20 +20,20 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
+                    android:background="@android:color/white"
                     android:minHeight="?attr/actionBarSize"
                     android:subtitleTextColor="@color/colorPrimary"
                     android:theme="@style/ToolbarTheme"
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:titleTextAppearance="@style/Toolbar.TitleText"
-                    app:titleTextColor="@color/colorPrimary">
+                    app:titleTextColor="@color/colorPrimary" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tweet"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 

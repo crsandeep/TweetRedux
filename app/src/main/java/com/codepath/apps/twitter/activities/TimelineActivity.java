@@ -1,9 +1,12 @@
 package com.codepath.apps.twitter.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -58,6 +61,13 @@ public class TimelineActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        if (!isNetworkAvailable(this)) {
+            Snackbar.make(binding.swipeContainer, R.string.not_connected, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
+                    v -> {
+                        this.recreate();
+                    }).show();
+        }
 
         tweets = new ArrayList<>();
         aTweets = new TweetsAdapter(this, tweets);
@@ -215,5 +225,10 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     public void postTweet(View view) {
+    }
+
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

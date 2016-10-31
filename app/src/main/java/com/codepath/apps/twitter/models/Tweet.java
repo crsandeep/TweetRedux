@@ -44,6 +44,9 @@ public class Tweet {
     @SerializedName("retweeted")
     @Expose
     private Boolean retweeted;
+    @SerializedName("retweeted_status")
+    @Expose
+    private Retweet retweet;
 
     public String getCreatedAt() {
         return createdAt;
@@ -139,5 +142,13 @@ public class Tweet {
 
     public void setRetweeted(Boolean retweeted) {
         this.retweeted = retweeted;
+    }
+
+    public Retweet getRetweet() {
+        return retweet;
+    }
+
+    public void setRetweet(Retweet retweet) {
+        this.retweet = retweet;
     }
 }
