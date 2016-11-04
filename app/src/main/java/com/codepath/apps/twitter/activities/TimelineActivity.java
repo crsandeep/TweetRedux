@@ -2,17 +2,19 @@ package com.codepath.apps.twitter.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -23,7 +25,6 @@ import com.codepath.apps.twitter.TwitterApplication;
 import com.codepath.apps.twitter.adapters.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.twitter.adapters.ItemClickSupport;
 import com.codepath.apps.twitter.adapters.TweetsAdapter;
-import com.codepath.apps.twitter.databinding.ActivityTimelineBinding;
 import com.codepath.apps.twitter.fragments.ComposeFragment;
 import com.codepath.apps.twitter.models.Tweet;
 import com.codepath.apps.twitter.network.TwitterClient;
@@ -40,12 +41,12 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TimelineActivity extends AppCompatActivity {
-
-    private ActivityTimelineBinding binding;
 
     private TwitterClient client;
     private static ArrayList<com.codepath.apps.twitter.models.Tweet> tweets;
@@ -54,16 +55,22 @@ public class TimelineActivity extends AppCompatActivity {
     private static boolean refresh = false;
     private static String screenName = "";
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.rvTweets) RecyclerView rvTweets;
+    @BindView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
+        setContentView(R.layout.activity_timeline);
+        ButterKnife.bind(this);
 
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (!isNetworkAvailable(this)) {
-            Snackbar.make(binding.swipeContainer, R.string.not_connected, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
+            Snackbar.make(swipeContainer, R.string.not_connected, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
                     v -> {
                         this.recreate();
                     }).show();
@@ -71,10 +78,10 @@ public class TimelineActivity extends AppCompatActivity {
 
         tweets = new ArrayList<>();
         aTweets = new TweetsAdapter(this, tweets);
-        binding.rvTweets.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
-        binding.rvTweets.setAdapter(aTweets);
+        rvTweets.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
+        rvTweets.setAdapter(aTweets);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        binding.rvTweets.setLayoutManager(mLayoutManager);
+        rvTweets.setLayoutManager(mLayoutManager);
         client = TwitterApplication.getRestClient();
         populateTimeline();
         setupProfileImage();
@@ -100,19 +107,19 @@ public class TimelineActivity extends AppCompatActivity {
             }
         }
 
-        binding.swipeContainer.setOnRefreshListener(() -> {
+        swipeContainer.setOnRefreshListener(() -> {
             refresh = true;
             populateTimeline();
         });
 
-        binding.rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+        rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 populateTimeline();
             }
         });
 
-        ItemClickSupport.addTo(binding.rvTweets).setOnItemLongClickListener(
+        ItemClickSupport.addTo(rvTweets).setOnItemLongClickListener(
                 new ItemClickSupport.OnItemLongClickListener() {
 
                     @Override
@@ -153,7 +160,7 @@ public class TimelineActivity extends AppCompatActivity {
         );
 
 
-        ItemClickSupport.addTo(binding.rvTweets).setOnItemClickListener(
+        ItemClickSupport.addTo(rvTweets).setOnItemClickListener(
                 (recyclerView, position, v) -> {
                     Intent intent = new Intent(TimelineActivity.this, DetailedViewActivity.class);
                     intent.putExtra("tweet", Parcels.wrap(tweets.get(position)));
@@ -181,13 +188,13 @@ public class TimelineActivity extends AppCompatActivity {
                 System.out.println(json);
                 tweets.addAll(Arrays.asList(new Gson().fromJson(json.toString(), com.codepath.apps.twitter.models.Tweet[].class)));
                 aTweets.notifyDataSetChanged();
-                binding.swipeContainer.setRefreshing(false);
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println("network call failed" + statusCode);
-                binding.swipeContainer.setRefreshing(false);
+                swipeContainer.setRefreshing(false);
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         }, max_id);
@@ -200,7 +207,7 @@ public class TimelineActivity extends AppCompatActivity {
                 try {
                     Utils.profileImageUrl = response.getString("profile_image_url").replace("_normal", "_bigger");
                     screenName = response.getString("screen_name");
-                    Glide.with(getApplicationContext()).load(Utils.profileImageUrl).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 60, 0)).into(binding.ivProfilePhoto);
+                    Glide.with(getApplicationContext()).load(Utils.profileImageUrl).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 60, 0)).into(ivProfilePhoto);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
