@@ -1,5 +1,7 @@
 package com.codepath.apps.twitter.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.text.format.DateUtils;
 
 import java.text.ParseException;
@@ -79,5 +81,10 @@ public class Utils {
 
     public static int daysBetween(Date d1, Date d2) {
         return (int) ((d2.getTime() - d1.getTime()) / DateUtils.DAY_IN_MILLIS);
+    }
+
+    public static boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

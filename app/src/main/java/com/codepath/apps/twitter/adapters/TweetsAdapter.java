@@ -103,6 +103,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         com.codepath.apps.twitter.models.Tweet tweet = mTweets.get(position);
         holder.tvRetweetUser.setVisibility(View.GONE);
         holder.ivMedia.setImageResource(0);
+        holder.ivMedia.setVisibility(View.GONE);
         holder.ivProfileImage.setImageResource(android.R.color.transparent);
         holder.ivRetweetImage.setVisibility(View.GONE);
         if(tweet.getRetweet() != null) {
@@ -176,6 +177,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     }
                 }
             }
+
+            holder.ivMedia.setVisibility(View.VISIBLE);
 
             Glide.with(getContext()).load(image).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
                     RoundedCornersTransformation.CornerType.ALL)).into(holder.ivMedia);
