@@ -36,7 +36,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
-    private static List<com.codepath.apps.twitter.models.Tweet> mTweets;
+    private List<com.codepath.apps.twitter.models.Tweet> mTweets;
     private static Context mContext;
 
     TwitterClient client;

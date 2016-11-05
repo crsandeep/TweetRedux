@@ -37,21 +37,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import cz.msebera.android.httpclient.Header;
 
 public abstract class TweetsListFragment extends Fragment {
 
     private TwitterClient client;
-    private static ArrayList<Tweet> tweets;
+    private ArrayList<Tweet> tweets;
     private TweetsAdapter aTweets;
 
-    @BindView(R.id.rvTweets)
-    RecyclerView rvTweets;
-    @BindView(R.id.swipeContainer)
-    SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.rvTweets) RecyclerView rvTweets;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
-    private Unbinder unbinder;
     private static String screenName = "";
 
     @Override
@@ -66,21 +62,13 @@ public abstract class TweetsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+        ButterKnife.bind(this, view);
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         rvTweets.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
         rvTweets.setAdapter(aTweets);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mLayoutManager.scrollToPosition(0);
         rvTweets.setLayoutManager(mLayoutManager);
-
-        populateTimeline(null, true);
-
-        swipeContainer.setOnRefreshListener(() -> populateTimeline(null, true));
 
         if (!Utils.isNetworkAvailable(getActivity())) {
             Snackbar.make(swipeContainer, R.string.not_connected, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
@@ -92,7 +80,7 @@ public abstract class TweetsListFragment extends Fragment {
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                populateTimeline(Long.toString(tweets.get(tweets.size() - 1).getId() - 1), false);
+                populateTimeline("max_id", tweets.get(tweets.size() - 1).getId() - 1);
             }
         });
 
@@ -145,26 +133,37 @@ public abstract class TweetsListFragment extends Fragment {
                     startActivity(intent);
                 }
         );
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        populateTimeline("since_id", (long) 1);
+        swipeContainer.setOnRefreshListener(() -> {
+            populateTimeline("since_id", (long) 1);
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     public static void setScreenName(String name) {
         screenName = name;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
     protected void addAll(List<Tweet> list, boolean clear){
         if(clear){
             tweets.clear();
+            aTweets.notifyDataSetChanged();
         }
         tweets.addAll(list);
         aTweets.notifyDataSetChanged();
+        rvTweets.setVisibility(View.VISIBLE);
         swipeContainer.setRefreshing(false);
     }
 
-    public abstract void populateTimeline(String max_id, boolean clear);
+    protected abstract void populateTimeline(String sinceOrMaxId, long count);
 }

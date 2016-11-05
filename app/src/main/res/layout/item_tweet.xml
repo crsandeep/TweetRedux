@@ -163,7 +163,7 @@
                 <ImageView
                     android:id="@+id/ivLike"
                     android:layout_width="0dp"
-                    android:layout_height="18dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="end"
                     android:layout_weight="0.2"
                     android:contentDescription="@string/like"

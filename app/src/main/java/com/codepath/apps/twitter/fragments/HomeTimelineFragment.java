@@ -25,17 +25,22 @@ public class HomeTimelineFragment extends TweetsListFragment {
         client = TwitterApplication.getRestClient();
     }
 
-    public void populateTimeline(String max_id, boolean clear) {
+    public void populateTimeline(String type, long count) {
+
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Boolean clear = false;
+                if (type.equals("since_id")) {
+                    clear = true;
+                }
                 addAll(Arrays.asList(new Gson().fromJson(response.toString(), com.codepath.apps.twitter.models.Tweet[].class)), clear);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                populateTimeline(max_id, clear);
+
             }
-        }, max_id);
+        }, type, count);
     }
 }

@@ -3,18 +3,23 @@ package com.codepath.apps.twitter.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.twitter.R;
 import com.codepath.apps.twitter.TwitterApplication;
 import com.codepath.apps.twitter.fragments.ComposeFragment;
 import com.codepath.apps.twitter.fragments.HomeTimelineFragment;
+import com.codepath.apps.twitter.fragments.MentionsTimelineFragment;
 import com.codepath.apps.twitter.fragments.TweetsListFragment;
 import com.codepath.apps.twitter.network.TwitterClient;
 import com.codepath.apps.twitter.utils.Utils;
@@ -33,26 +38,52 @@ public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbarTitle) TextView toolbarTitle;
     @BindView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
+    @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.tabs) PagerSlidingTabStrip tabStrip;
 
     private static String screenName = "";
+    private String tabText[] = {"Home", "Mentions"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         ButterKnife.bind(this);
+
         client = TwitterApplication.getRestClient();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flContainer, new HomeTimelineFragment());
-        ft.commit();
+        viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
+        tabStrip.setViewPager(viewPager);
+
+        tabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                toolbarTitle.setText(tabText[position]);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+        });
 
         setupProfileImage();
+        handleIntents();
+    }
 
+    private void handleIntents() {
         Intent webIntent = getIntent();
         String action = webIntent.getAction();
         String type = webIntent.getType();
@@ -100,5 +131,35 @@ public class TimelineActivity extends AppCompatActivity {
         ComposeFragment composeFragment = ComposeFragment.newInstance("Compose tweet");
         composeFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
         composeFragment.show(fm, "fragment_compose");
+    }
+
+        public class TweetsPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+
+        private int tabIcons[] = {R.drawable.home, R.drawable.notifications};
+
+        public TweetsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return new HomeTimelineFragment();
+            } else if (position == 1) {
+                return new MentionsTimelineFragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return tabIcons.length;
+        }
+
+        @Override
+        public int getPageIconResId(int position) {
+            return tabIcons[position];
+        }
     }
 }
