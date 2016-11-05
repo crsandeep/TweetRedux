@@ -81,6 +81,11 @@ public class TimelineActivity extends AppCompatActivity {
 
         setupProfileImage();
         handleIntents();
+
+        ivProfilePhoto.setOnClickListener(v -> {
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
+        });
     }
 
     private void handleIntents() {
@@ -107,7 +112,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void setupProfileImage() {
-        client.verifyCredentials(new JsonHttpResponseHandler() {
+        client.getUserInfo(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {

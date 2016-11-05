@@ -1,5 +1,6 @@
 package com.codepath.apps.twitter.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.twitter.R;
 import com.codepath.apps.twitter.TwitterApplication;
 import com.codepath.apps.twitter.activities.ImageFullscreenActivity;
+import com.codepath.apps.twitter.activities.ProfileActivity;
 import com.codepath.apps.twitter.fragments.ComposeFragment;
 import com.codepath.apps.twitter.network.TwitterClient;
 import com.codepath.apps.twitter.utils.Utils;
@@ -100,6 +102,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(TweetsAdapter.ViewHolder holder, int position) {
+        Activity t = (Activity) mContext;
         com.codepath.apps.twitter.models.Tweet tweet = mTweets.get(position);
         holder.tvRetweetUser.setVisibility(View.GONE);
         holder.ivMedia.setImageResource(0);
@@ -128,8 +131,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             String screenName = "@" + tweet.getUser().getScreenName();
             holder.tvScreenName.setText(screenName);
             String imageUrl = tweet.getUser().getProfileImageUrl().replace("_normal", "_bigger");
-            Glide.with(getContext()).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
-                    RoundedCornersTransformation.CornerType.ALL)).into(holder.ivProfileImage);
+            if(!t.isDestroyed()) {
+                Glide.with(getContext()).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
+                        RoundedCornersTransformation.CornerType.ALL)).into(holder.ivProfileImage);
+            }
             if (tweet.getFavoriteCount() != null && tweet.getFavoriteCount() > 0) {
                 String likeString = Integer.toString(tweet.getFavoriteCount());
                 if (tweet.getFavoriteCount() >= 1000) {
@@ -180,8 +185,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             holder.ivMedia.setVisibility(View.VISIBLE);
 
-            Glide.with(getContext()).load(image).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
-                    RoundedCornersTransformation.CornerType.ALL)).into(holder.ivMedia);
+            if(!t.isDestroyed()) {
+                Glide.with(getContext()).load(image).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
+                        RoundedCornersTransformation.CornerType.ALL)).into(holder.ivMedia);
+            }
         }
 
         holder.ivMedia.setOnClickListener(v -> {
@@ -313,6 +320,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Tweet from " + tweet.getUser().getName() + "(" + "@" + tweet.getUser().getScreenName() + ")");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             mContext.startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        });
+
+        holder.ivProfileImage.setOnClickListener(v -> {
+            Intent i = new Intent(mContext, ProfileActivity.class);
+            i.putExtra("screenName", tweet.getUser().getScreenName());
+            mContext.startActivity(i);
         });
     }
 

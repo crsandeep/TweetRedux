@@ -53,6 +53,19 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl, null, handler);
 	}
 
+	public void getUserTimeline(JsonHttpResponseHandler handler, String screenName) {
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("screen_name", screenName);
+		getClient().get(apiUrl, params, handler);
+	}
+
+	public void getUserInfo(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		getClient().get(apiUrl, handler);
+	}
+
 	public void composeTweet(AsyncHttpResponseHandler  handler, String tweetBody, boolean isReply, String idToReply){
 		String apiUrl = getApiUrl("statuses/update.json");
 		RequestParams params = new RequestParams();
@@ -66,11 +79,6 @@ public class TwitterClient extends OAuthBaseClient {
 	public void deleteTweet(AsyncHttpResponseHandler  handler, String tweetId){
 		String apiUrl = getApiUrl("statuses/destroy/" + tweetId + ".json");
 		getClient().post(apiUrl, handler);
-	}
-
-	public void verifyCredentials(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("account/verify_credentials.json");
-		getClient().get(apiUrl, handler);
 	}
 
 	public void reTweet(AsyncHttpResponseHandler handler, String tweetId) {

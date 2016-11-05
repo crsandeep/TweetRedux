@@ -140,10 +140,7 @@ public abstract class TweetsListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         populateTimeline("since_id", (long) 1);
-        swipeContainer.setOnRefreshListener(() -> {
-            populateTimeline("since_id", (long) 1);
-        });
-        // Configure the refreshing colors
+        swipeContainer.setOnRefreshListener(() -> populateTimeline("since_id", (long) 1));
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
