@@ -1,117 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:focusableInTouchMode="true"
-    tools:context=".activities.ProfileActivity">
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/flContainer"
+        android:background="@android:color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <ImageView
-            android:id="@+id/ivBackgroundImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#AAB8C2" />
-
-        <ImageView
-            android:id="@+id/ivProfileImage"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_above="@+id/rlUserHeader"
-            android:layout_marginBottom="-40dp"
-            android:layout_marginStart="10dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/profile_image"
-            tools:src="@drawable/ic_launcher" />
-
-        <RelativeLayout
-            android:id="@+id/rlUserHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/ivBackgroundImage"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp"
-                android:paddingTop="40dp"
-                android:textColor="#606060"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                tools:text="Sandeep Raveesh" />
-
-            <TextView
-                android:id="@+id/tvScreenName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/tvName"
-                android:layout_below="@+id/tvName"
-                android:layout_marginBottom="3dp"
-                android:textColor="#AAB8C2"
-                android:textSize="13sp"
-                tools:text="crsandeep" />
-
-            <TextView
-                android:id="@+id/tvTagline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/tvScreenName"
-                android:layout_below="@+id/tvScreenName"
-                android:textSize="15sp"
-                tools:text="Tagline" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/llCounts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rlUserHeader"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:weightSum="3">
-
-            <TextView
-                android:id="@+id/tvFollowers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                tools:text="5 followers" />
-
-            <TextView
-                android:id="@+id/tvFollowing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                tools:text="20 following" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/primerdivisor"
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:layout_below="@+id/llCounts"
-            android:background="#AAB8C2" />
-
-        <FrameLayout
-            android:id="@+id/flContainer"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/primerdivisor" />
+            android:fillViewport="true">
 
-    </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </FrameLayout>
+
+
+    <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTextStyle"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <RelativeLayout
+                android:id="@+id/rlUserHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:id="@+id/ivBackgroundImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    tools:src="@drawable/placeholder"
+                    android:background="@color/colorPrimary" />
+
+                <ImageView
+                    android:id="@+id/ivProfilePic"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_below="@+id/ivBackgroundImage"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/profile_image"
+                    tools:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:paddingTop="10dp"
+                    android:textColor="#606060"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/ivProfilePic"
+                    tools:text="Sandeep Raveesh" />
+
+                <TextView
+                    android:id="@+id/tvScreenName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/tvName"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="#909090"
+                    android:textSize="14sp"
+                    tools:text="crsandeep" />
+
+                <TextView
+                    android:id="@+id/tvTagline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/tvScreenName"
+                    android:layout_below="@+id/tvScreenName"
+                    android:textSize="15sp"
+                    android:textColor="#606060"
+                    tools:text="Tagline" />
+
+                <TextView
+                    android:id="@+id/tvFollowing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/tvScreenName"
+                    android:layout_below="@+id/tvTagline"
+                    android:paddingTop="10dp"
+                    android:textColor="#606060"
+                    tools:text="200 FOLLOWING" />
+
+                <TextView
+                    android:id="@+id/tvFollowers"
+                    android:layout_width="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:layout_alignTop="@+id/tvFollowing"
+                    android:paddingStart="20dp"
+                    android:layout_toRightOf="@+id/tvFollowing"
+                    android:textColor="#606060"
+                    tools:text="200 FOLLOWERS" />
+
+                <View
+                    android:id="@+id/primerdivisor"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tvFollowers"
+                    android:layout_alignParentStart="true"
+                    android:background="#AAB8C2" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

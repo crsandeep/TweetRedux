@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,9 +37,9 @@ public class ProfileActivity extends AppCompatActivity {
     String screenName;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.toolbarTitle) TextView toolbarTitle;
-    @BindView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
-    @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+    //@BindView(R.id.toolbarTitle) TextView toolbarTitle;
+    //@BindView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
+    @BindView(R.id.ivProfilePic) ImageView ivProfileImage;
     @BindView(R.id.ivBackgroundImage) ImageView ivBackgroundImage;
     @BindView(R.id.tvName) TextView tvName;
     @BindView(R.id.tvScreenName) TextView tvScreenName;
@@ -60,8 +59,6 @@ public class ProfileActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
-        ivProfilePhoto.setVisibility(View.GONE);
 
         user = Parcels.unwrap(getIntent().getParcelableExtra("user"));
 
@@ -92,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
             populateProfileHeader(user);
         }
 
-        toolbarTitle.setText("@" + screenName);
+        //toolbarTitle.setText("@" + screenName);
 
         if(savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.getInstance(screenName);
@@ -113,7 +110,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void populateProfileHeader(User user) {
         tvName.setText(user.getName());
-        tvScreenName.setText(user.getScreenName());
+        tvScreenName.setText("@" + user.getScreenName());
         tvTagline.setText(user.getDescription());
         String htmlText = "<b>" + Utils.formattedLikesAndRetweets(user.getFollowersCount()) + "</b> FOLLOWERS";
         tvFollowers.setText(Html.fromHtml(htmlText));
