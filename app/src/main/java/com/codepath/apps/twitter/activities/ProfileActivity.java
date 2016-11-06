@@ -3,6 +3,7 @@ package com.codepath.apps.twitter.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,8 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
     String screenName;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    //@BindView(R.id.toolbarTitle) TextView toolbarTitle;
-    //@BindView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
+    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.ivProfilePic) ImageView ivProfileImage;
     @BindView(R.id.ivBackgroundImage) ImageView ivBackgroundImage;
     @BindView(R.id.tvName) TextView tvName;
@@ -70,8 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         user = new Gson().fromJson(response.toString(), User.class);
-                        getSupportActionBar().setTitle("@" + user.getScreenName());
                         populateProfileHeader(user);
+                        setToolbarTitle();
                     }
                 }, screenName);
             } else {
@@ -79,17 +79,16 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         user = new Gson().fromJson(response.toString(), User.class);
-                        getSupportActionBar().setTitle("@" + user.getScreenName());
                         populateProfileHeader(user);
+                        setToolbarTitle();
                     }
                 });
             }
         } else {
             screenName = user.getScreenName();
             populateProfileHeader(user);
+            setToolbarTitle();
         }
-
-        //toolbarTitle.setText("@" + screenName);
 
         if(savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.getInstance(screenName);
@@ -98,6 +97,13 @@ public class ProfileActivity extends AppCompatActivity {
             ft.replace(R.id.flContainer, userTimelineFragment);
             ft.commit();
         }
+    }
+
+    private void setToolbarTitle() {
+        String title = user.getName() + " " +  Utils.formattedLikesAndRetweets(user.getStatusesCount()) + " Tweets";
+        collapsingToolbar.setTitle(title);
+        collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
+        collapsingToolbar.setExpandedTitleColor(Color.WHITE);
     }
 
     @Override
