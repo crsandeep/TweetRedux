@@ -1,10 +1,14 @@
 package com.codepath.apps.twitter.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,10 +18,12 @@ import com.codepath.apps.twitter.TwitterApplication;
 import com.codepath.apps.twitter.fragments.UserTimelineFragment;
 import com.codepath.apps.twitter.models.User;
 import com.codepath.apps.twitter.network.TwitterClient;
+import com.codepath.apps.twitter.utils.Utils;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +34,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     TwitterClient client;
     User user;
+    String screenName;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbarTitle) TextView toolbarTitle;
+    @BindView(R.id.ivProfilePhoto) ImageView ivProfilePhoto;
     @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
     @BindView(R.id.ivBackgroundImage) ImageView ivBackgroundImage;
     @BindView(R.id.tvName) TextView tvName;
@@ -46,18 +55,32 @@ public class ProfileActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
-        client = TwitterApplication.getRestClient();
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = new Gson().fromJson(response.toString(), User.class);
-                getSupportActionBar().setTitle("@" + user.getScreenName());
-                populateProfileHeader(user);
-            }
-        });
+        ivProfilePhoto.setVisibility(View.GONE);
 
-        String screenName = getIntent().getStringExtra("screenName");
+        user = Parcels.unwrap(getIntent().getParcelableExtra("user"));
+
+        if(user == null) {
+            screenName = getIntent().getStringExtra("screenName");
+            client = TwitterApplication.getRestClient();
+            client.getUserInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    user = new Gson().fromJson(response.toString(), User.class);
+                    getSupportActionBar().setTitle("@" + user.getScreenName());
+                    populateProfileHeader(user);
+                }
+            });
+        } else {
+            screenName = user.getScreenName();
+            populateProfileHeader(user);
+        }
+
+        toolbarTitle.setText("@" + screenName);
 
         if(savedInstanceState == null) {
             UserTimelineFragment userTimelineFragment = UserTimelineFragment.getInstance(screenName);
@@ -68,15 +91,31 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void populateProfileHeader(User user) {
         tvName.setText(user.getName());
         tvScreenName.setText(user.getScreenName());
         tvTagline.setText(user.getDescription());
-        tvFollowers.setText(user.getFollowersCount() + " Followers");
-        tvFollowing.setText(user.getFriendsCount() + "Following");
-        Glide.with(getApplicationContext()).load(user.getProfileImageUrl().replace("_normal", "_bigger")).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 15, 0)).into(ivProfileImage);
-        if(!TextUtils.isEmpty(user.getProfileBackgroundImageUrl())) {
-            Glide.with(getApplicationContext()).load(user.getProfileBackgroundImageUrl()).into(ivProfileImage);
+        String htmlText = "<b>" + Utils.formattedLikesAndRetweets(user.getFollowersCount()) + "</b> FOLLOWERS";
+        tvFollowers.setText(Html.fromHtml(htmlText));
+        htmlText = "<b>" + Utils.formattedLikesAndRetweets(user.getFriendsCount()) + "</b> FOLLOWING";
+        tvFollowing.setText(Html.fromHtml(htmlText));
+        Glide.with(this).load(user.getProfileImageUrl().replace("_normal", "_bigger")).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 10, 0)).into(ivProfileImage);
+        ivProfileImage.setOnClickListener(v -> Utils.showFullScreenImageForUrl(user.getProfileImageUrl().replace("_normal", ""), this));
+        ivBackgroundImage.setImageResource(android.R.color.transparent);
+        if(!TextUtils.isEmpty(user.getProfileBannerUrl())) {
+            Glide.with(this).load(user.getProfileBannerUrl()).into(ivBackgroundImage);
+            ivBackgroundImage.setOnClickListener(v -> Utils.showFullScreenImageForUrl(user.getProfileBannerUrl(), this));
+        } else {
+            ivBackgroundImage.getLayoutParams().height = 350;
+            ivBackgroundImage.setBackgroundColor(Color.parseColor("#AAB8C2"));
         }
     }
 }

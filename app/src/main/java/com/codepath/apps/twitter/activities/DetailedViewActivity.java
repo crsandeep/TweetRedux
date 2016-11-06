@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +41,10 @@ public class DetailedViewActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         client = TwitterApplication.getRestClient();
 
@@ -77,6 +82,12 @@ public class DetailedViewActivity extends AppCompatActivity {
                 binding.tvLikeCount.setText(likeString);
             }
         }
+
+        binding.ivProfileImage.setOnClickListener(v1 -> {
+            Intent i = new Intent(this, ProfileActivity.class);
+            i.putExtra("user", Parcels.wrap(tweet.getUser()));
+            startActivity(i);
+        });
 
         binding.tvBody.setTypeface(Typeface.createFromAsset(getAssets(), "helveticaroman.otf"));
         binding.tvBody.setText(tweet.getText());
@@ -117,24 +128,7 @@ public class DetailedViewActivity extends AppCompatActivity {
                     RoundedCornersTransformation.CornerType.ALL)).into(binding.ivMedia);
         }
 
-        binding.ivMedia.setOnClickListener(v -> {
-            Intent intent = new Intent(DetailedViewActivity.this, ImageFullscreenActivity.class);
-            String image = "";
-
-            if(tweet.getEntities().getMedia() != null && tweet.getEntities().getMedia().size() > 0) {
-                for(int i = 0; i < tweet.getEntities().getMedia().size();i++) {
-                    if(tweet.getEntities().getMedia().get(i) != null) {
-                        String mediaUrl = tweet.getEntities().getMedia().get(i).getMediaUrl();
-                        if (!TextUtils.isEmpty(mediaUrl)) {
-                            image = mediaUrl;
-                            break;
-                        }
-                    }
-                }
-            }
-            intent.putExtra("image", image);
-            startActivity(intent);
-        });
+        binding.ivMedia.setOnClickListener(v -> Utils.showFullScreenImage(tweet, this));
 
         binding.ivReply.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
@@ -225,5 +219,13 @@ public class DetailedViewActivity extends AppCompatActivity {
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

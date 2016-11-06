@@ -1,6 +1,5 @@
 package com.codepath.apps.twitter.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,11 +17,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.twitter.R;
 import com.codepath.apps.twitter.TwitterApplication;
-import com.codepath.apps.twitter.activities.ImageFullscreenActivity;
 import com.codepath.apps.twitter.activities.ProfileActivity;
 import com.codepath.apps.twitter.fragments.ComposeFragment;
 import com.codepath.apps.twitter.network.TwitterClient;
@@ -30,8 +29,10 @@ import com.codepath.apps.twitter.utils.Utils;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -39,7 +40,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
     private List<com.codepath.apps.twitter.models.Tweet> mTweets;
-    private static Context mContext;
+    private Context mContext;
 
     TwitterClient client;
 
@@ -102,7 +103,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(TweetsAdapter.ViewHolder holder, int position) {
-        Activity t = (Activity) mContext;
         com.codepath.apps.twitter.models.Tweet tweet = mTweets.get(position);
         holder.tvRetweetUser.setVisibility(View.GONE);
         holder.ivMedia.setImageResource(0);
@@ -131,10 +131,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             String screenName = "@" + tweet.getUser().getScreenName();
             holder.tvScreenName.setText(screenName);
             String imageUrl = tweet.getUser().getProfileImageUrl().replace("_normal", "_bigger");
-            if(!t.isDestroyed()) {
-                Glide.with(getContext()).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
-                        RoundedCornersTransformation.CornerType.ALL)).into(holder.ivProfileImage);
-            }
+            Glide.with(getContext()).load(imageUrl).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
+                    RoundedCornersTransformation.CornerType.ALL)).into(holder.ivProfileImage);
             if (tweet.getFavoriteCount() != null && tweet.getFavoriteCount() > 0) {
                 String likeString = Integer.toString(tweet.getFavoriteCount());
                 if (tweet.getFavoriteCount() >= 1000) {
@@ -146,13 +144,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         holder.tvBody.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "helveticaroman.otf"));
         holder.tvBody.setText(tweet.getText());
 
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile("\\@(\\w+)|\\#(\\w+)"), Color.parseColor("#66d6ff"),
+                        text -> {
+                            Toast.makeText(mContext, "Clicked username: " + text,
+                                    Toast.LENGTH_SHORT).show();
+                        }).into(holder.tvBody);
+
         holder.tvTime.setText(Utils.getRelativeTimeAgo(tweet.getCreatedAt()));
         if (tweet.getRetweetCount() != null && tweet.getRetweetCount() > 0) {
-            String retweetString = Integer.toString(tweet.getRetweetCount());
-            if (tweet.getRetweetCount() >= 1000) {
-                retweetString = (tweet.getRetweetCount() / 1000) + "k";
-            }
-            holder.tvRetweetCount.setText(retweetString);
+            holder.tvRetweetCount.setText(Utils.formattedLikesAndRetweets(tweet.getRetweetCount()));
         }
         if (tweet.getRetweeted()) {
             holder.tvRetweetCount.setTextColor(Color.parseColor("#19cf86"));
@@ -185,30 +186,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             holder.ivMedia.setVisibility(View.VISIBLE);
 
-            if(!t.isDestroyed()) {
-                Glide.with(getContext()).load(image).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
-                        RoundedCornersTransformation.CornerType.ALL)).into(holder.ivMedia);
-            }
+            Glide.with(getContext()).load(image).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
+                    RoundedCornersTransformation.CornerType.ALL)).into(holder.ivMedia);
         }
 
-        holder.ivMedia.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, ImageFullscreenActivity.class);
-            String image = "";
-
-            if (tweet.getEntities().getMedia() != null && tweet.getEntities().getMedia().size() > 0) {
-                for (int i = 0; i < tweet.getEntities().getMedia().size(); i++) {
-                    if (tweet.getEntities().getMedia().get(i) != null) {
-                        String mediaUrl = tweet.getEntities().getMedia().get(i).getMediaUrl();
-                        if (!TextUtils.isEmpty(mediaUrl)) {
-                            image = mediaUrl;
-                            break;
-                        }
-                    }
-                }
-            }
-            intent.putExtra("image", image);
-            mContext.startActivity(intent);
-        });
+        holder.ivMedia.setOnClickListener(v -> Utils.showFullScreenImage(tweet, mContext));
 
         holder.ivReply.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
@@ -324,7 +306,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         holder.ivProfileImage.setOnClickListener(v -> {
             Intent i = new Intent(mContext, ProfileActivity.class);
-            i.putExtra("screenName", tweet.getUser().getScreenName());
+            i.putExtra("user", Parcels.wrap(tweet.getUser()));
             mContext.startActivity(i);
         });
     }

@@ -1,8 +1,13 @@
 package com.codepath.apps.twitter.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
+
+import com.codepath.apps.twitter.activities.ImageFullscreenActivity;
+import com.codepath.apps.twitter.models.Tweet;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,5 +91,38 @@ public class Utils {
     public static boolean isNetworkAvailable(final Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    public static void showFullScreenImage(Tweet tweet, Context mContext) {
+        Intent intent = new Intent(mContext, ImageFullscreenActivity.class);
+        String image = "";
+
+        if (tweet.getEntities().getMedia() != null && tweet.getEntities().getMedia().size() > 0) {
+            for (int i = 0; i < tweet.getEntities().getMedia().size(); i++) {
+                if (tweet.getEntities().getMedia().get(i) != null) {
+                    String mediaUrl = tweet.getEntities().getMedia().get(i).getMediaUrl();
+                    if (!TextUtils.isEmpty(mediaUrl)) {
+                        image = mediaUrl;
+                        break;
+                    }
+                }
+            }
+        }
+        intent.putExtra("image", image);
+        mContext.startActivity(intent);
+    }
+
+    public static void showFullScreenImageForUrl(String url, Context mContext) {
+        Intent intent = new Intent(mContext, ImageFullscreenActivity.class);
+        intent.putExtra("image", url);
+        mContext.startActivity(intent);
+    }
+
+    public static String formattedLikesAndRetweets(int count) {
+        String formattedLikesAndRetweets = Integer.toString(count);
+        if (count >= 1000) {
+            formattedLikesAndRetweets = (count / 1000) + "K";
+        }
+        return formattedLikesAndRetweets;
     }
 }

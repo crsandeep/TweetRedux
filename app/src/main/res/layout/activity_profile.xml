@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/ivBackgroundImage"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="wrap_content"
             android:background="#AAB8C2" />
 
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_above="@+id/rlUserHeader"
-            android:layout_marginBottom="-50dp"
+            android:layout_marginBottom="-40dp"
             android:layout_marginStart="10dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/profile_image"
@@ -46,7 +46,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
                 android:paddingTop="40dp"
+                android:textColor="#606060"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 tools:text="Sandeep Raveesh" />
 
             <TextView
@@ -56,6 +60,8 @@
                 android:layout_alignStart="@+id/tvName"
                 android:layout_below="@+id/tvName"
                 android:layout_marginBottom="3dp"
+                android:textColor="#AAB8C2"
+                android:textSize="13sp"
                 tools:text="crsandeep" />
 
             <TextView
@@ -64,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/tvScreenName"
                 android:layout_below="@+id/tvScreenName"
-                android:textSize="12sp"
+                android:textSize="15sp"
                 tools:text="Tagline" />
         </RelativeLayout>
 
@@ -93,7 +99,7 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/primerdivisor2"
+            android:id="@+id/primerdivisor"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:layout_below="@+id/llCounts"
@@ -104,7 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/primerdivisor2" />
+            android:layout_below="@+id/primerdivisor" />
 
     </RelativeLayout>
 

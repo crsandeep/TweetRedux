@@ -45,6 +45,17 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl, params, handler);
 	}
 
+	public void searchTweets(JsonHttpResponseHandler handler, String query, Long id) {
+		String apiUrl = getApiUrl("search/tweets.json");
+		RequestParams params = new RequestParams();
+		params.put("q", query);
+		params.put("result_type", "popular");
+		if(id > 0) {
+			params.put("max_id", id);
+		}
+		getClient().get(apiUrl, params, handler);
+	}
+
 	public void getDirectMessages(JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("direct_messages.json");
 		RequestParams params = new RequestParams();

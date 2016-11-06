@@ -17,7 +17,8 @@
         <!-- actionMenuTextColor is the color of the text of action (menu) items  -->
         <item name="actionMenuTextColor">@color/colorPrimary</item>
         <!-- Tints the input fields like checkboxes and text fields -->
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
 
         <!-- Enable these below if you want clicking icons to trigger a ripple effect -->
         <item name="selectableItemBackground">?android:selectableItemBackground</item>
@@ -45,5 +46,10 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar"></style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar"/>
+
+    <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textSize">0sp</item>
+    </style>
 </resources>
