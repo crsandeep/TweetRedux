@@ -25,14 +25,14 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         client = TwitterApplication.getRestClient();
     }
 
-    public void populateTimeline(String type, long count) {
+    public void populateTimeline(long max_id) {
 
         client.getMentionsTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                boolean clear = false;
-                if (type.equals("since_id")) {
-                    clear = true;
+                boolean clear = true;
+                if (max_id > 0) {
+                    clear = false;
                 }
                 addAll(Arrays.asList(new Gson().fromJson(response.toString(), com.codepath.apps.twitter.models.Tweet[].class)), clear);
             }
@@ -41,6 +41,6 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
-        }, type, count);
+        }, max_id);
     }
 }

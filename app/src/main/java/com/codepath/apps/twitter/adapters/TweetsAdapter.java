@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.twitter.R;
@@ -32,7 +31,6 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -144,14 +142,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         holder.tvBody.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "helveticaroman.otf"));
         holder.tvBody.setText(tweet.getText());
 
-        new PatternEditableBuilder().
-                addPattern(Pattern.compile("\\@(\\w+)|\\#(\\w+)"), Color.parseColor("#66d6ff"),
-                        text -> {
-                            Toast.makeText(mContext, "Clicked username: " + text,
-                                    Toast.LENGTH_SHORT).show();
-                        }).into(holder.tvBody);
+        Utils.addSpanListener(getContext(), holder.tvBody);
 
         holder.tvTime.setText(Utils.getRelativeTimeAgo(tweet.getCreatedAt()));
+
         if (tweet.getRetweetCount() != null && tweet.getRetweetCount() > 0) {
             holder.tvRetweetCount.setText(Utils.formattedLikesAndRetweets(tweet.getRetweetCount()));
         }

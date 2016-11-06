@@ -80,7 +80,7 @@ public abstract class TweetsListFragment extends Fragment {
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                populateTimeline("max_id", tweets.get(tweets.size() - 1).getId() - 1);
+                populateTimeline(tweets.get(tweets.size() - 1).getId() - 1);
             }
         });
 
@@ -133,18 +133,19 @@ public abstract class TweetsListFragment extends Fragment {
                     startActivity(intent);
                 }
         );
+
+        populateTimeline((long) 0);
+        swipeContainer.setOnRefreshListener(() -> populateTimeline((long) 0));
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        populateTimeline("since_id", (long) 1);
-        swipeContainer.setOnRefreshListener(() -> populateTimeline("since_id", (long) 1));
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
     }
 
     public static void setScreenName(String name) {
@@ -162,5 +163,5 @@ public abstract class TweetsListFragment extends Fragment {
         swipeContainer.setRefreshing(false);
     }
 
-    protected abstract void populateTimeline(String sinceOrMaxId, long count);
+    protected abstract void populateTimeline(long max_id);
 }

@@ -67,14 +67,25 @@ public class ProfileActivity extends AppCompatActivity {
         if(user == null) {
             screenName = getIntent().getStringExtra("screenName");
             client = TwitterApplication.getRestClient();
-            client.getUserInfo(new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    user = new Gson().fromJson(response.toString(), User.class);
-                    getSupportActionBar().setTitle("@" + user.getScreenName());
-                    populateProfileHeader(user);
-                }
-            });
+            if(getIntent().getBooleanExtra("fromSpan", false)) {
+                client.getUserInfo(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        user = new Gson().fromJson(response.toString(), User.class);
+                        getSupportActionBar().setTitle("@" + user.getScreenName());
+                        populateProfileHeader(user);
+                    }
+                }, screenName);
+            } else {
+                client.getUserInfo(new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        user = new Gson().fromJson(response.toString(), User.class);
+                        getSupportActionBar().setTitle("@" + user.getScreenName());
+                        populateProfileHeader(user);
+                    }
+                });
+            }
         } else {
             screenName = user.getScreenName();
             populateProfileHeader(user);

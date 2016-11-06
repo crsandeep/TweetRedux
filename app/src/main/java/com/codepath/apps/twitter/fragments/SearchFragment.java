@@ -33,17 +33,17 @@ public class SearchFragment extends TweetsListFragment {
         client = TwitterApplication.getRestClient();
     }
 
-    public void populateTimeline(String type, long count) {
+    public void populateTimeline(long max_id) {
 
         client.searchTweets(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                boolean clear = false;
-                if (type.equals("since_id")) {
-                    clear = true;
-                }
                 try {
                     JSONArray tweetArray = response.getJSONArray("statuses");
+                    boolean clear = true;
+                    if (max_id > 0) {
+                        clear = false;
+                    }
                     addAll(Arrays.asList(new Gson().fromJson(tweetArray.toString(), com.codepath.apps.twitter.models.Tweet[].class)), clear);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -54,6 +54,6 @@ public class SearchFragment extends TweetsListFragment {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
-        }, getArguments().getString("query"), count);
+        }, getArguments().getString("query"), max_id);
     }
 }

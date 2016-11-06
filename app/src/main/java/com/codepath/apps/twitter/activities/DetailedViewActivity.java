@@ -91,6 +91,8 @@ public class DetailedViewActivity extends AppCompatActivity {
 
         binding.tvBody.setTypeface(Typeface.createFromAsset(getAssets(), "helveticaroman.otf"));
         binding.tvBody.setText(tweet.getText());
+        Utils.addSpanListener(this, binding.tvBody);
+
         String relativeTime = Utils.getRelativeTimeAgo(tweet.getCreatedAt()) + " ago";
         binding.tvTime.setText(relativeTime);
         binding.tvRetweetCount.setText("");

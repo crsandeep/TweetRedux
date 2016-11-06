@@ -164,6 +164,12 @@ public class ComposeFragment extends DialogFragment {
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     dismiss();
                 }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    dismiss();
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
             }, etTweetText.getText().toString(), isReply, idToReply);
         });
     }

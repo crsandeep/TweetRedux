@@ -2,11 +2,16 @@ package com.codepath.apps.twitter.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.widget.TextView;
 
 import com.codepath.apps.twitter.activities.ImageFullscreenActivity;
+import com.codepath.apps.twitter.activities.ProfileActivity;
+import com.codepath.apps.twitter.activities.SearchActivity;
+import com.codepath.apps.twitter.adapters.PatternEditableBuilder;
 import com.codepath.apps.twitter.models.Tweet;
 
 import java.text.ParseException;
@@ -14,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -124,5 +130,24 @@ public class Utils {
             formattedLikesAndRetweets = (count / 1000) + "K";
         }
         return formattedLikesAndRetweets;
+    }
+
+    public static void addSpanListener(Context context, TextView view) {
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile("\\@(\\w+)"), Color.parseColor("#66d6ff"),
+                        text -> {
+                            Intent intent = new Intent(context, ProfileActivity.class);
+                            intent.putExtra("fromSpan", true);
+                            intent.putExtra("screenName", text.substring(1));
+                            context.startActivity(intent);
+                        }).into(view);
+
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile("\\#(\\w+)"), Color.parseColor("#66d6ff"),
+                        text -> {
+                            Intent intent = new Intent(context, SearchActivity.class);
+                            intent.putExtra("query", text);
+                            context.startActivity(intent);
+                        }).into(view);
     }
 }
