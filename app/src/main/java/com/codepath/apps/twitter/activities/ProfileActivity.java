@@ -1,5 +1,6 @@
 package com.codepath.apps.twitter.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -118,6 +119,21 @@ public class ProfileActivity extends AppCompatActivity {
         tvFollowers.setText(Html.fromHtml(htmlText));
         htmlText = "<b>" + Utils.formattedLikesAndRetweets(user.getFriendsCount()) + "</b> FOLLOWING";
         tvFollowing.setText(Html.fromHtml(htmlText));
+
+        tvFollowers.setOnClickListener(v1 -> {
+            Intent intent = new Intent(this, FollowActivity.class);
+            intent.putExtra("user", Parcels.wrap(user));
+            intent.putExtra("isFollower", true);
+            startActivity(intent);
+        });
+
+        tvFollowing.setOnClickListener(v1 -> {
+            Intent intent = new Intent(this, FollowActivity.class);
+            intent.putExtra("user", Parcels.wrap(user));
+            intent.putExtra("isFollower", false);
+            startActivity(intent);
+        });
+
         Glide.with(this).load(user.getProfileImageUrl().replace("_normal", "_bigger")).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 10, 0)).into(ivProfileImage);
         ivProfileImage.setOnClickListener(v -> Utils.showFullScreenImageForUrl(user.getProfileImageUrl().replace("_normal", ""), this));
         ivBackgroundImage.setImageResource(android.R.color.transparent);

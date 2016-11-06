@@ -63,7 +63,8 @@
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".activities.DetailedViewActivity" />
         <activity android:name=".activities.ProfileActivity" />
-        <activity android:name=".activities.SearchActivity"></activity>
+        <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.FollowActivity"></activity>
     </application>
 
 </manifest>
