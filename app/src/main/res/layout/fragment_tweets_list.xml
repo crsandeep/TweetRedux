@@ -5,6 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <com.eyalbira.loadingdots.LoadingDots
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:LoadingDots_auto_play="true"
+        app:LoadingDots_dots_color="@android:color/holo_blue_light"
+        app:LoadingDots_dots_count="8"
+        app:LoadingDots_dots_size="5dp"
+        app:LoadingDots_dots_space="1dp"
+        app:LoadingDots_loop_duration="800"
+        app:LoadingDots_loop_start_delay="100"
+        app:LoadingDots_jump_duration="200"
+        app:LoadingDots_jump_height="6dp"
+        android:id="@+id/ldProgress"/>
+
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"

@@ -20,12 +20,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.codepath.apps.twitter.R;
 import com.codepath.apps.twitter.TwitterApplication;
 import com.codepath.apps.twitter.activities.DetailedViewActivity;
-import com.codepath.apps.twitter.helpers.ItemClickSupport;
 import com.codepath.apps.twitter.adapters.TweetsAdapter;
 import com.codepath.apps.twitter.helpers.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.twitter.helpers.ItemClickSupport;
 import com.codepath.apps.twitter.models.Tweet;
 import com.codepath.apps.twitter.network.TwitterClient;
 import com.codepath.apps.twitter.utils.Utils;
+import com.eyalbira.loadingdots.LoadingDots;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -47,6 +48,7 @@ public abstract class TweetsListFragment extends Fragment {
 
     @BindView(R.id.rvTweets) RecyclerView rvTweets;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.ldProgress) LoadingDots ldProgress;
 
     private static String screenName = "";
 
@@ -56,6 +58,16 @@ public abstract class TweetsListFragment extends Fragment {
         client = TwitterApplication.getRestClient();
         tweets = new ArrayList<>();
         aTweets = new TweetsAdapter(getActivity(), tweets);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (!Utils.isNetworkAvailable(getActivity())) {
+            Snackbar.make(swipeContainer, R.string.not_connected, Snackbar.LENGTH_INDEFINITE).setAction("Retry", v -> {
+                getActivity().recreate();
+            }).show();
+        }
     }
 
     @Nullable
@@ -70,16 +82,10 @@ public abstract class TweetsListFragment extends Fragment {
         mLayoutManager.scrollToPosition(0);
         rvTweets.setLayoutManager(mLayoutManager);
 
-        if (!Utils.isNetworkAvailable(getActivity())) {
-            Snackbar.make(swipeContainer, R.string.not_connected, Snackbar.LENGTH_INDEFINITE).setAction("Retry",
-                    v -> {
-                        getActivity().recreate();
-                    }).show();
-        }
-
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
+                ldProgress.setVisibility(View.VISIBLE);
                 populateTimeline(tweets.get(tweets.size() - 1).getId() - 1);
             }
         });
@@ -134,6 +140,7 @@ public abstract class TweetsListFragment extends Fragment {
                 }
         );
 
+        ldProgress.setVisibility(View.VISIBLE);
         populateTimeline((long) 0);
         swipeContainer.setOnRefreshListener(() -> populateTimeline((long) 0));
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -160,6 +167,7 @@ public abstract class TweetsListFragment extends Fragment {
         tweets.addAll(list);
         aTweets.notifyDataSetChanged();
         rvTweets.setVisibility(View.VISIBLE);
+        ldProgress.setVisibility(View.GONE);
         swipeContainer.setRefreshing(false);
     }
 

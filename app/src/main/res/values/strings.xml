@@ -22,5 +22,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="not_connected">Not connected to internet</string>
     <string name="sign_up">Sign up</string>
+    <string name="background_image">background image</string>
 
 </resources>

@@ -142,7 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Glide.with(this).load(user.getProfileImageUrl().replace("_normal", "_bigger")).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 10, 0)).into(ivProfileImage);
+        Glide.with(this).load(user.getProfileImageUrl().replace("_normal", "")).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 10, 0)).into(ivProfileImage);
         ivProfileImage.setOnClickListener(v -> Utils.showFullScreenImageForUrl(user.getProfileImageUrl().replace("_normal", ""), this));
         ivBackgroundImage.setImageResource(android.R.color.transparent);
         if(!TextUtils.isEmpty(user.getProfileBannerUrl())) {
