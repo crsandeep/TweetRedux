@@ -1,4 +1,4 @@
-package com.codepath.apps.twitter.adapters;
+package com.codepath.apps.twitter.helpers;
 
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;

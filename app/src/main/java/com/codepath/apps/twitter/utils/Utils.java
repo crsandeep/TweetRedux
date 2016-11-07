@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.codepath.apps.twitter.activities.ImageFullscreenActivity;
 import com.codepath.apps.twitter.activities.ProfileActivity;
 import com.codepath.apps.twitter.activities.SearchActivity;
-import com.codepath.apps.twitter.adapters.PatternEditableBuilder;
+import com.codepath.apps.twitter.helpers.PatternEditableBuilder;
 import com.codepath.apps.twitter.models.Tweet;
 
 import java.text.ParseException;
@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 public class Utils {
 
     public static String profileImageUrl = "";
+    public static String screenName = "";
 
     public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";

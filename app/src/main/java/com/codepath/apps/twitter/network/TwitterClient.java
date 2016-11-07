@@ -61,15 +61,19 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl, params, handler);
 	}
 
-	public void getDirectMessages(JsonHttpResponseHandler handler, Long id) {
+	public void getDirectMessages(JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("direct_messages.json");
 		RequestParams params = new RequestParams();
-		params.put("count", 20);
-		if(id > 0) {
-			params.put("max_id", id);
-		}
 		getClient().get(apiUrl, params, handler);
 	}
+
+    public void sendDirectMessages(JsonHttpResponseHandler handler, String screen_name, String text) {
+        String apiUrl = getApiUrl("direct_messages/new.json");
+        RequestParams params = new RequestParams();
+        params.put("screen_name", screen_name);
+        params.put("text", text);
+        getClient().post(apiUrl, params, handler);
+    }
 
 	public void getUserInfo(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");

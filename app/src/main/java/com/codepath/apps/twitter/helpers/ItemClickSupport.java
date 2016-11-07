@@ -1,4 +1,4 @@
-package com.codepath.apps.twitter.adapters;
+package com.codepath.apps.twitter.helpers;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

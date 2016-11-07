@@ -75,7 +75,7 @@
             android:textColor="#B0B0B0"
             tools:text="1 min ago" />
 
-        <com.codepath.apps.twitter.adapters.LinkifiedTextView
+        <com.codepath.apps.twitter.helpers.LinkifiedTextView
             android:id="@+id/tvBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

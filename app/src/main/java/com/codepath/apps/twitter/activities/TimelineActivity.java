@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.twitter.R;
 import com.codepath.apps.twitter.TwitterApplication;
 import com.codepath.apps.twitter.fragments.ComposeFragment;
+import com.codepath.apps.twitter.fragments.DirectMessagesFragment;
 import com.codepath.apps.twitter.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitter.fragments.MentionsTimelineFragment;
 import com.codepath.apps.twitter.fragments.TweetsListFragment;
@@ -51,7 +52,7 @@ public class TimelineActivity extends AppCompatActivity {
     PagerSlidingTabStrip tabStrip;
 
     private static String screenName = "";
-    private String tabText[] = {"Home", "Mentions"};
+    private String tabText[] = {"Home", "Mentions", "Messages"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +125,7 @@ public class TimelineActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     Utils.profileImageUrl = response.getString("profile_image_url").replace("_normal", "_bigger");
+                    Utils.screenName = response.getString("screen_name");
                     screenName = response.getString("screen_name");
                     Glide.with(getApplicationContext()).load(Utils.profileImageUrl).bitmapTransform(new RoundedCornersTransformation(getApplicationContext(), 60, 0)).into(ivProfilePhoto);
                     TweetsListFragment.setScreenName(screenName);
@@ -172,7 +174,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     public class TweetsPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
-        private int tabIcons[] = {R.drawable.home, R.drawable.notifications};
+        private int tabIcons[] = {R.drawable.home, R.drawable.notifications, R.drawable.message};
 
         public TweetsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -184,6 +186,8 @@ public class TimelineActivity extends AppCompatActivity {
                 return new HomeTimelineFragment();
             } else if (position == 1) {
                 return new MentionsTimelineFragment();
+            } else if (position == 2) {
+                return new DirectMessagesFragment();
             } else {
                 return null;
             }
