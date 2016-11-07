@@ -47,89 +47,102 @@
                 app:layout_collapseMode="parallax"
                 android:background="@android:color/white">
 
+
                 <ImageView
                     android:id="@+id/ivBackgroundImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     tools:src="@drawable/placeholder"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorAccent" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/ivBackgroundImage" >
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:paddingTop="50dp"
+                        android:textColor="#606060"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentTop="true"
+                        tools:text="Sandeep Raveesh" />
+
+                    <TextView
+                        android:id="@+id/tvScreenName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/tvName"
+                        android:layout_below="@+id/tvName"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="#909090"
+                        android:textSize="14sp"
+                        tools:text="crsandeep" />
+
+                    <TextView
+                        android:id="@+id/tvTagline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/tvScreenName"
+                        android:layout_below="@+id/tvScreenName"
+                        android:textSize="15sp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:textColor="#606060"
+                        tools:text="Tagline" />
+
+                    <TextView
+                        android:id="@+id/tvFollowing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/tvScreenName"
+                        android:layout_below="@+id/tvTagline"
+                        android:paddingTop="10dp"
+                        android:textColor="#606060"
+                        tools:text="200 FOLLOWING" />
+
+                    <TextView
+                        android:id="@+id/tvFollowers"
+                        android:layout_width="wrap_content"
+                        android:paddingBottom="20dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:layout_alignTop="@+id/tvFollowing"
+                        android:paddingStart="20dp"
+                        android:layout_toRightOf="@+id/tvFollowing"
+                        android:textColor="#606060"
+                        tools:text="200 FOLLOWERS" />
+
+                    <View
+                        android:id="@+id/primerdivisor"
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tvFollowers"
+                        android:layout_alignParentStart="true"
+                        android:background="#AAB8C2" />
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/ivProfilePic"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:layout_below="@+id/ivBackgroundImage"
+                    android:layout_above="@+id/layoutBottom"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="-40dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/profile_image"
                     tools:src="@drawable/ic_launcher" />
-
-                <TextView
-                    android:id="@+id/tvName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:paddingTop="10dp"
-                    android:textColor="#606060"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/ivProfilePic"
-                    tools:text="Sandeep Raveesh" />
-
-                <TextView
-                    android:id="@+id/tvScreenName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/tvName"
-                    android:layout_below="@+id/tvName"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="#909090"
-                    android:textSize="14sp"
-                    tools:text="crsandeep" />
-
-                <TextView
-                    android:id="@+id/tvTagline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/tvScreenName"
-                    android:layout_below="@+id/tvScreenName"
-                    android:textSize="15sp"
-                    android:textColor="#606060"
-                    tools:text="Tagline" />
-
-                <TextView
-                    android:id="@+id/tvFollowing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/tvScreenName"
-                    android:layout_below="@+id/tvTagline"
-                    android:paddingTop="10dp"
-                    android:textColor="#606060"
-                    tools:text="200 FOLLOWING" />
-
-                <TextView
-                    android:id="@+id/tvFollowers"
-                    android:layout_width="wrap_content"
-                    android:paddingBottom="20dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:layout_alignTop="@+id/tvFollowing"
-                    android:paddingStart="20dp"
-                    android:layout_toRightOf="@+id/tvFollowing"
-                    android:textColor="#606060"
-                    tools:text="200 FOLLOWERS" />
-
-                <View
-                    android:id="@+id/primerdivisor"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/tvFollowers"
-                    android:layout_alignParentStart="true"
-                    android:background="#AAB8C2" />
 
             </RelativeLayout>
 

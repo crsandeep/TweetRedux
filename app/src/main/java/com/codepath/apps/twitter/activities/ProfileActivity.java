@@ -1,11 +1,14 @@
 package com.codepath.apps.twitter.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -22,6 +25,8 @@ import com.codepath.apps.twitter.network.TwitterClient;
 import com.codepath.apps.twitter.utils.Utils;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -141,11 +146,27 @@ public class ProfileActivity extends AppCompatActivity {
         ivProfileImage.setOnClickListener(v -> Utils.showFullScreenImageForUrl(user.getProfileImageUrl().replace("_normal", ""), this));
         ivBackgroundImage.setImageResource(android.R.color.transparent);
         if(!TextUtils.isEmpty(user.getProfileBannerUrl())) {
-            Glide.with(this).load(user.getProfileBannerUrl()).into(ivBackgroundImage);
-            ivBackgroundImage.setOnClickListener(v -> Utils.showFullScreenImageForUrl(user.getProfileBannerUrl(), this));
+            Picasso.with(this).load(user.getProfileBannerUrl()).placeholder(R.drawable.placeholder).into(ivBackgroundImage, new Callback() {
+                @Override public void onSuccess() {
+                    Bitmap bitmap = ((BitmapDrawable) ivBackgroundImage.getDrawable()).getBitmap();
+                    Palette.from(bitmap).generate(palette -> applyPalette(palette));
+                    ivBackgroundImage.setOnClickListener(v -> Utils.showFullScreenImageForUrl(user.getProfileBannerUrl(), ProfileActivity.this));
+                }
+                @Override public void onError() {
+                    ivBackgroundImage.setImageResource(R.drawable.placeholder);
+                }
+            });
         } else {
             ivBackgroundImage.getLayoutParams().height = 350;
             ivBackgroundImage.setBackgroundColor(Color.parseColor("#AAB8C2"));
         }
+    }
+
+    private void applyPalette(Palette palette) {
+        int primaryDark = getResources().getColor(R.color.colorPrimaryDark);
+        int primary = getResources().getColor(R.color.colorPrimary);
+        collapsingToolbar.setContentScrimColor(palette.getMutedColor(primary));
+        collapsingToolbar.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
+        supportStartPostponedEnterTransition();
     }
 }
