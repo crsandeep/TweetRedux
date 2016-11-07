@@ -19,6 +19,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder> {
@@ -40,8 +42,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View tweetView = inflater.inflate(R.layout.item_follow, parent, false);
-        ViewHolder viewHolder = new ViewHolder(tweetView);
-        return viewHolder;
+        return new ViewHolder(tweetView);
     }
 
     @Override
@@ -67,17 +68,15 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvUserName, tvDescription, tvScreenName;
-        public ImageView ivProfileImg;
-        public RelativeLayout rlFollowItem;
+        @BindView(R.id.tvUserName) TextView tvUserName;
+        @BindView(R.id.tvDescription) TextView tvDescription;
+        @BindView(R.id.tvScreenName) TextView tvScreenName;
+        @BindView(R.id.ivProfileImg) ImageView ivProfileImg;
+        @BindView(R.id.rlFollowItem) RelativeLayout rlFollowItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
-            tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
-            ivProfileImg = (ImageView) itemView.findViewById(R.id.ivProfileImg);
-            rlFollowItem = (RelativeLayout) itemView.findViewById(R.id.rlFollowItem);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

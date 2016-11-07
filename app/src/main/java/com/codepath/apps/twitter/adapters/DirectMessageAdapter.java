@@ -16,6 +16,8 @@ import com.codepath.apps.twitter.utils.Utils;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class DirectMessageAdapter extends RecyclerView.Adapter<DirectMessageAdapter.ViewHolder> {
@@ -36,8 +38,7 @@ public class DirectMessageAdapter extends RecyclerView.Adapter<DirectMessageAdap
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View tweetView = inflater.inflate(R.layout.item_message, parent, false);
-        ViewHolder viewHolder = new ViewHolder(tweetView);
-        return viewHolder;
+        return new ViewHolder(tweetView);
 
     }
 
@@ -45,12 +46,11 @@ public class DirectMessageAdapter extends RecyclerView.Adapter<DirectMessageAdap
     public void onBindViewHolder(DirectMessageAdapter.ViewHolder viewHolder, int position) {
         final DirectMessage message = mMessages.get(position);
         User otherUser;
-        String text;
+        String text = "";
         if(!message.getRecipientUser().getScreenName().equals(Utils.screenName)){
-            text = new String("Me: ");
+            text = "Me: ";
             otherUser = message.getRecipientUser();
         }else{
-            text = new String();
             otherUser = message.getSenderUser();
         }
 
@@ -77,18 +77,16 @@ public class DirectMessageAdapter extends RecyclerView.Adapter<DirectMessageAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvUserName, tvText, tvScreenName, tvRelativeTime;
-        public ImageView ivProfileImg;
+
+        @BindView(R.id.tvUserName) TextView tvUserName;
+        @BindView(R.id.tvText) TextView tvText;
+        @BindView(R.id.tvScreenName) TextView tvScreenName;
+        @BindView(R.id.tvRelativeTime) TextView tvRelativeTime;
+        @BindView(R.id.ivProfileImg) ImageView ivProfileImg;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvRelativeTime = (TextView) itemView.findViewById(R.id.tvRelativeTime);
-            tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
-
-            tvText = (TextView) itemView.findViewById(R.id.tvText);
-            ivProfileImg = (ImageView) itemView.findViewById(R.id.ivProfileImg);
+            ButterKnife.bind(this, itemView);
         }
     }
 

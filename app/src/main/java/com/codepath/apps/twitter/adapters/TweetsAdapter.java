@@ -168,8 +168,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             holder.ivMedia.setVisibility(View.VISIBLE);
 
-            Glide.with(getContext()).load(image).bitmapTransform(new RoundedCornersTransformation(mContext, 10, 0,
-                    RoundedCornersTransformation.CornerType.ALL)).into(holder.ivMedia);
+            Glide.with(getContext()).load(image).bitmapTransform(new RoundedCornersTransformation(mContext, 15, 0,
+                    RoundedCornersTransformation.CornerType.ALL)).centerCrop().into(holder.ivMedia);
         }
 
         holder.ivMedia.setOnClickListener(v -> Utils.showFullScreenImage(tweet, mContext));

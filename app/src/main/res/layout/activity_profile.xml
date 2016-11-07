@@ -51,8 +51,7 @@
                 <ImageView
                     android:id="@+id/ivBackgroundImage"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:scaleType="centerCrop"
+                    android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax"
                     android:layout_alignParentStart="true"

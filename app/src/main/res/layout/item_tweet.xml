@@ -93,13 +93,13 @@
         <ImageView
             android:id="@+id/ivMedia"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
             android:layout_below="@+id/tvBody"
             android:layout_toEndOf="@+id/ivProfileImage"
             android:adjustViewBounds="true"
-            android:paddingTop="5dp"
+            android:layout_marginTop="10dp"
             android:paddingBottom="5dp"
-            android:scaleType="fitCenter"
             tools:src="@drawable/ic_launcher" />
 
         <android.support.percent.PercentRelativeLayout
