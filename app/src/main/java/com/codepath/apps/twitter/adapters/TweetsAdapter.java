@@ -32,6 +32,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
@@ -53,41 +55,27 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvRetweetUser;
-        ImageView ivProfileImage;
-        ImageView ivRetweetImage;
-        TextView tvUserName;
-        TextView tvScreenName;
-        TextView tvBody;
-        TextView tvTime;
-        TextView tvRetweetCount;
-        TextView tvLikeCount;
-        ImageView ivMedia;
-        ImageView ivRetweet;
-        ImageView ivLike;
-        ImageView ivReply;
-        ImageView ivShare;
-        LinearLayout retweetLayout;
-        LinearLayout likeLayout;
+
+        @BindView(R.id.tvRetweetUser) TextView tvRetweetUser;
+        @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+        @BindView(R.id.ivRetweetImage) ImageView ivRetweetImage;
+        @BindView(R.id.tvUserName) TextView tvUserName;
+        @BindView(R.id.tvScreenName) TextView tvScreenName;
+        @BindView(R.id.tvBody) TextView tvBody;
+        @BindView(R.id.tvTime) TextView tvTime;
+        @BindView(R.id.tvRetweetCount) TextView tvRetweetCount;
+        @BindView(R.id.tvLikeCount) TextView tvLikeCount;
+        @BindView(R.id.ivMedia) ImageView ivMedia;
+        @BindView(R.id.ivRetweet) ImageView ivRetweet;
+        @BindView(R.id.ivLike) ImageView ivLike;
+        @BindView(R.id.ivReply) ImageView ivReply;
+        @BindView(R.id.ivShare) ImageView ivShare;
+        @BindView(R.id.retweetLayout) LinearLayout retweetLayout;
+        @BindView(R.id.likeLayout) LinearLayout likeLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvRetweetUser = (TextView) itemView.findViewById(R.id.tvRetweetUser);
-            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
-            tvBody = (TextView) itemView.findViewById(R.id.tvBody);
-            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
-            ivRetweetImage = (ImageView) itemView.findViewById(R.id.ivRetweetImage);
-            tvRetweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
-            tvLikeCount = (TextView) itemView.findViewById(R.id.tvLikeCount);
-            ivMedia = (ImageView) itemView.findViewById(R.id.ivMedia);
-            ivRetweet = (ImageView) itemView.findViewById(R.id.ivRetweet);
-            ivLike = (ImageView) itemView.findViewById(R.id.ivLike);
-            ivReply = (ImageView) itemView.findViewById(R.id.ivReply);
-            ivShare = (ImageView) itemView.findViewById(R.id.ivShare);
-            retweetLayout = (LinearLayout) itemView.findViewById(R.id.retweetLayout);
-            likeLayout = (LinearLayout) itemView.findViewById(R.id.likeLayout);
+            ButterKnife.bind(this, itemView);
         }
     }
 
